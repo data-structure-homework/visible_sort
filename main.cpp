@@ -1,9 +1,11 @@
 #include <iostream>
+#include <cstdio>
 #include <time.h>       //时间
 #include <thread>       //线程暂停
 #include <chrono>
 #include <windows.h>    //cmd命令库
 using namespace std;
+int arr[100];
 
 void init(){
     SetConsoleOutputCP(65001);//设置CMD为UTF8
@@ -22,24 +24,23 @@ void init(){
     MoveWindow(hWnd,20,26,1280,720,true);//调整CMD窗口大小
 }
 
-void display(int number[],int number_count){
+void display(int number_count){
     for(int i=30;i>0;i--){
         for(int j=0;j<number_count;j++){
-            if(number[j]<i)
-                cout<<" ";
+            if(arr[j]<i)
+                printf(" ");
             else
-                cout<<"O";
+                printf("O");
         }
         cout<<endl;
     }
 }
 
 
-void insertion_sort(int arr[],int len)
+void insertion_sort(int len)  //插入排序
 {
     for(int i=1;i<len;++i)
     {
-        cout<<"\033c";
         int key=arr[i];
         int j=i-1;
         while((j>=0) && (key<arr[j]))
@@ -47,23 +48,64 @@ void insertion_sort(int arr[],int len)
             arr[j+1]=arr[j];
             j--;
         }
-        display(arr,len);
+        cout<<"\033c";
+        display(len);
         arr[j+1]=key;
-        //this_thread::sleep_for(chrono::milliseconds(50)); // 0.2s
+        this_thread::sleep_for(chrono::milliseconds(100)); // 0.02s
     }
+}
+
+void quick_sort(int len,int start,int end){       //快速排序
+    int left_pointer,right_pointer;
+    int base_number,temp;
+    if(start>end)
+        return;
+
+    left_pointer=start;
+    right_pointer=end;
+    base_number=arr[start];
+    while(left_pointer!=right_pointer){
+        while(arr[right_pointer]>=base_number && left_pointer<right_pointer)
+            right_pointer--;
+
+        while(arr[left_pointer]<=base_number && left_pointer<right_pointer)
+            left_pointer++;
+
+        if(left_pointer<right_pointer){
+            temp=arr[left_pointer];
+            arr[left_pointer]=arr[right_pointer];
+            arr[right_pointer]=temp;
+            cout<<"\033c";
+            display(len);
+        }
+    }
+    arr[start]=arr[left_pointer];
+    arr[left_pointer]=base_number;
+    cout<<"\033c";
+    display(len);
+
+    quick_sort(100,start,left_pointer-1);
+    quick_sort(100,left_pointer+1,end);
 }
 
 int main(int argc, char* argv[])
 {
     init();
     srand((unsigned)time(NULL));
-    int number[130];
-    for(int i=0;i<130;i++){
-        number[i]=rand()%31+1;
+    // for(int i=0;i<130;i++){
+    //     arr[i]=rand()%31+1;
+    // }
+    // display(130);
+    // getchar();
+    // insertion_sort(130);
+    // getchar();
+    for(int i=0;i<100;i++){
+        arr[i]=rand()%31+1;
     }
-    display(number,130);
+    //getchar();
+    display(100);
     getchar();
-    insertion_sort(number,130);
+    quick_sort(100,0,99);
     getchar();
     //display(arr,30);
     return 0;
