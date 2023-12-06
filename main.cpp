@@ -39,7 +39,6 @@ void insertion_sort(int arr[],int len)
 {
     for(int i=1;i<len;++i)
     {
-        cout<<"sucess"<<endl;
         cout<<"\033c";
         int key=arr[i];
         int j=i-1;
