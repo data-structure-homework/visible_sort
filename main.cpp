@@ -7,5 +7,6 @@ int main(int argc, char* argv[])
     cout<<"THIS IS A TEST"<<endl;
     system("pause");
     //test
+    // this is a code, insert it
     return 0;
 }
