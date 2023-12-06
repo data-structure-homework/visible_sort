@@ -24,6 +24,12 @@ void init(){
     MoveWindow(hWnd,20,26,1280,720,true);//调整CMD窗口大小
 }
 
+void arr_inin(int count){
+    for(int i=0;i<count;i++){
+        arr[i]=rand()%31+1;
+    }
+}
+
 void display(int number_count){
     for(int i=30;i>0;i--){
         for(int j=0;j<number_count;j++){
@@ -88,25 +94,44 @@ void quick_sort(int len,int start,int end){       //快速排序
     quick_sort(100,left_pointer+1,end);
 }
 
+void menu(){
+    cout<<"\033c";
+    cout<<"可视化排序算法v1.0"<<endl;
+    cout<<"1.插入排序"<<endl;
+    cout<<"2.快速排序"<<endl;
+    cout<<"0.退出"<<endl;
+    cout<<"请输入你的选择:";
+}
+
 int main(int argc, char* argv[])
 {
+    const int count=100;
     init();
     srand((unsigned)time(NULL));
-    // for(int i=0;i<130;i++){
-    //     arr[i]=rand()%31+1;
-    // }
-    // display(130);
-    // getchar();
-    // insertion_sort(130);
-    // getchar();
-    for(int i=0;i<100;i++){
-        arr[i]=rand()%31+1;
+    int choose=1;
+    while(choose!=0){
+        menu();
+        cin>>choose;
+        if(choose==1){
+            cout<<"\033c";
+            arr_inin(count);
+            display(100);
+            cout<<"随机数组已经生成完成，请按任意键继续......";
+            getchar(); getchar();
+            insertion_sort(100);
+            cout<<"随机数组已经排序完成，请按任意键继续......";
+            getchar(); 
+        }
+        if(choose==2){
+            cout<<"\033c";
+            arr_inin(count);
+            display(100);
+            cout<<"随机数组已经生成完成，请按任意键继续......";
+            getchar(); getchar();
+            quick_sort(100,0,99);
+            cout<<"随机数组已经排序完成，请按任意键继续......";
+            getchar();
+        }
     }
-    //getchar();
-    display(100);
-    getchar();
-    quick_sort(100,0,99);
-    getchar();
-    //display(arr,30);
     return 0;
 }
