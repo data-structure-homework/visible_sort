@@ -1,4 +1,5 @@
 #include <iostream>
+#include <time.h>
 using namespace std;
 void display(int number[],int number_count){
     for(int i=30;i>0;i--){
