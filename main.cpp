@@ -14,11 +14,11 @@ void display(int number[],int number_count){
 int main(int argc, char* argv[])
 {
     srand(time(nullptr));
-    int number[30];
-    for(int i=0;i<30;i++){
+    int number[70];
+    for(int i=0;i<70;i++){
         number[i]=rand()%31+1;
     }
-    display(number,30);
+    display(number,70);
     getchar();
     return 0;
 }
