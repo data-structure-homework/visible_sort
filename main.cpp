@@ -12,6 +12,7 @@ void display(int number[],int number_count){
         cout<<endl;
     }
 }
+
 int main(int argc, char* argv[])
 {
     srand(time(nullptr));
