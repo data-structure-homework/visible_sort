@@ -22,16 +22,25 @@ void init(){
     GetConsoleTitle(title, 256);
     hWnd = FindWindow(0, title);
     MoveWindow(hWnd,20,26,1280,720,true);//调整CMD窗口大小
+
 }
 
 void arr_inin(int count){
+    cin.clear(); 
     for(int i=0;i<count;i++){
         arr[i]=rand()%31+1;
     }
 }
 
+void gotoxy(int x, int y) {     //光标复位
+	COORD pos = {x,y};
+	HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleCursorPosition(hOut, pos);
+}
+
 void display(int number_count){
     for(int i=30;i>0;i--){
+        printf("\r"); 
         for(int j=0;j<number_count;j++){
             if(arr[j]<i)
                 printf(" ");
@@ -54,7 +63,7 @@ void insertion_sort(int len)  //插入排序
             arr[j+1]=arr[j];
             j--;
         }
-        cout<<"\033c";
+        gotoxy(0,0);
         display(len);
         arr[j+1]=key;
         this_thread::sleep_for(chrono::milliseconds(100)); // 0.02s
@@ -81,24 +90,40 @@ void quick_sort(int len,int start,int end){       //快速排序
             temp=arr[left_pointer];
             arr[left_pointer]=arr[right_pointer];
             arr[right_pointer]=temp;
-            cout<<"\033c";
+            gotoxy(0,0);
             display(len);
         }
     }
     arr[start]=arr[left_pointer];
     arr[left_pointer]=base_number;
-    cout<<"\033c";
+    gotoxy(0,0);
     display(len);
 
     quick_sort(100,start,left_pointer-1);
     quick_sort(100,left_pointer+1,end);
 }
 
+void bubble_sort(int len){
+    int temp=0;
+    for(int i=0;i<len;i++){
+        for(int j=0;j<len-1;j++){
+            if(arr[j]>arr[j+1]){
+                temp=arr[j];
+                arr[j]=arr[j+1];
+                arr[j+1]=temp;
+            }
+        }
+        gotoxy(0,0);
+        display(len);
+    }
+}
+
 void menu(){
-    cout<<"\033c";
-    cout<<"可视化排序算法v1.0"<<endl;
+    system("cls");
+    cout<<"可视化排序算法v1.1"<<endl;
     cout<<"1.插入排序"<<endl;
     cout<<"2.快速排序"<<endl;
+    cout<<"3.冒泡排序"<<endl;
     cout<<"0.退出"<<endl;
     cout<<"请输入你的选择:";
 }
@@ -108,27 +133,40 @@ int main(int argc, char* argv[])
     const int count=100;
     init();
     srand((unsigned)time(NULL));
-    int choose=1;
+    int choose=3;
     while(choose!=0){
         menu();
         cin>>choose;
         if(choose==1){
-            cout<<"\033c";
+            system("cls");
             arr_inin(count);
             display(100);
             cout<<"随机数组已经生成完成，请按任意键继续......";
             getchar(); getchar();
+            system("cls");
             insertion_sort(100);
             cout<<"随机数组已经排序完成，请按任意键继续......";
             getchar(); 
         }
         if(choose==2){
-            cout<<"\033c";
+            system("cls");
             arr_inin(count);
             display(100);
             cout<<"随机数组已经生成完成，请按任意键继续......";
             getchar(); getchar();
+            system("cls");
             quick_sort(100,0,99);
+            cout<<"随机数组已经排序完成，请按任意键继续......";
+            getchar();
+        }
+        if(choose==3){
+            system("cls");
+            arr_inin(count);
+            display(100);
+            cout<<"随机数组已经生成完成，请按任意键继续......";
+            getchar(); getchar();
+            system("cls");
+            bubble_sort(100);
             cout<<"随机数组已经排序完成，请按任意键继续......";
             getchar();
         }
