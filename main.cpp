@@ -6,6 +6,8 @@
 #include <windows.h>    //cmd命令库
 using namespace std;
 int arr[100];
+int compare_count;      //比较计数器
+int exchange_count;     //交换计数器
 
 void init(){
     SetConsoleOutputCP(65001);//设置CMD为UTF8
@@ -23,6 +25,8 @@ void init(){
     hWnd = FindWindow(0, title);
     MoveWindow(hWnd,20,26,1280,720,true);//调整CMD窗口大小
 
+    compare_count=0;
+    exchange_count=0;
 }
 
 void arr_inin(int count){
@@ -30,6 +34,8 @@ void arr_inin(int count){
     for(int i=0;i<count;i++){
         arr[i]=rand()%31+1;
     }
+    compare_count=0;
+    exchange_count=0;
 }
 
 void gotoxy(int x, int y) {     //光标复位
@@ -49,6 +55,8 @@ void display(int number_count){
         }
         cout<<endl;
     }
+    cout<<"当前比较总数:"<<compare_count<<endl;
+    cout<<"当前交换总数:"<<exchange_count<<endl;
 }
 
 
@@ -60,13 +68,16 @@ void insertion_sort(int len)  //插入排序
         int j=i-1;
         while((j>=0) && (key<arr[j]))
         {
+            compare_count++;
+            exchange_count++;
             arr[j+1]=arr[j];
             j--;
         }
         gotoxy(0,0);
         display(len);
+        exchange_count++;
         arr[j+1]=key;
-        this_thread::sleep_for(chrono::milliseconds(100)); // 0.02s
+        //this_thread::sleep_for(chrono::milliseconds(100)); 
     }
 }
 
@@ -80,13 +91,21 @@ void quick_sort(int len,int start,int end){       //快速排序
     right_pointer=end;
     base_number=arr[start];
     while(left_pointer!=right_pointer){
-        while(arr[right_pointer]>=base_number && left_pointer<right_pointer)
-            right_pointer--;
+        while(arr[right_pointer]>=base_number && left_pointer<right_pointer){
+            compare_count++;
 
-        while(arr[left_pointer]<=base_number && left_pointer<right_pointer)
+            right_pointer--;
+        }
+
+        while(arr[left_pointer]<=base_number && left_pointer<right_pointer){
+            compare_count++;
+
             left_pointer++;
+        }
 
         if(left_pointer<right_pointer){
+            exchange_count++;
+
             temp=arr[left_pointer];
             arr[left_pointer]=arr[right_pointer];
             arr[right_pointer]=temp;
@@ -94,6 +113,8 @@ void quick_sort(int len,int start,int end){       //快速排序
             display(len);
         }
     }
+    exchange_count++;
+
     arr[start]=arr[left_pointer];
     arr[left_pointer]=base_number;
     gotoxy(0,0);
@@ -107,7 +128,9 @@ void bubble_sort(int len){
     int temp=0;
     for(int i=0;i<len;i++){
         for(int j=0;j<len-1;j++){
+            compare_count++;
             if(arr[j]>arr[j+1]){
+                exchange_count++;
                 temp=arr[j];
                 arr[j]=arr[j+1];
                 arr[j+1]=temp;
@@ -118,12 +141,17 @@ void bubble_sort(int len){
     }
 }
 
+void merge_sort(int len,int start,int middle,int end,int[] temp){
+    
+}
+
 void menu(){
     system("cls");
-    cout<<"可视化排序算法v1.1"<<endl;
+    cout<<"可视化排序算法v1.2"<<endl;
     cout<<"1.插入排序"<<endl;
     cout<<"2.快速排序"<<endl;
     cout<<"3.冒泡排序"<<endl;
+    cout<<"4.归并排序"<<endl;
     cout<<"0.退出"<<endl;
     cout<<"请输入你的选择:";
 }
