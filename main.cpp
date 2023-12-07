@@ -9,6 +9,21 @@ int arr[100];
 int compare_count;      //比较计数器
 int exchange_count;     //交换计数器
 
+void display(int number_count){
+    for(int i=30;i>0;i--){
+        printf("\r"); 
+        for(int j=0;j<number_count;j++){
+            if(arr[j]<i)
+                printf(" ");
+            else
+                printf("O");
+        }
+        cout<<endl;
+    }
+    cout<<"当前比较总数:"<<compare_count<<endl;
+    cout<<"当前交换总数:"<<exchange_count<<endl;
+}
+
 void init(){
     SetConsoleOutputCP(65001);//设置CMD为UTF8
 
@@ -30,35 +45,25 @@ void init(){
 }
 
 void arr_inin(int count){
+    system("cls");
     cin.clear(); 
     for(int i=0;i<count;i++){
         arr[i]=rand()%31+1;
     }
     compare_count=0;
     exchange_count=0;
+
+    display(100);
+    cout<<"随机数组已经生成完成，请按任意键继续......";
+    getchar(); getchar();
+    system("cls");
 }
 
-void gotoxy(int x, int y) {     //光标复位
+void gotoxy(short x, short y) {     //光标复位
 	COORD pos = {x,y};
 	HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
 	SetConsoleCursorPosition(hOut, pos);
 }
-
-void display(int number_count){
-    for(int i=30;i>0;i--){
-        printf("\r"); 
-        for(int j=0;j<number_count;j++){
-            if(arr[j]<i)
-                printf(" ");
-            else
-                printf("O");
-        }
-        cout<<endl;
-    }
-    cout<<"当前比较总数:"<<compare_count<<endl;
-    cout<<"当前交换总数:"<<exchange_count<<endl;
-}
-
 
 void insertion_sort(int len)  //插入排序
 {
@@ -93,13 +98,11 @@ void quick_sort(int len,int start,int end){       //快速排序
     while(left_pointer!=right_pointer){
         while(arr[right_pointer]>=base_number && left_pointer<right_pointer){
             compare_count++;
-
             right_pointer--;
         }
 
         while(arr[left_pointer]<=base_number && left_pointer<right_pointer){
             compare_count++;
-
             left_pointer++;
         }
 
@@ -141,8 +144,52 @@ void bubble_sort(int len){
     }
 }
 
-void merge_sort(int len,int start,int middle,int end,int[] temp){
-    
+void merge_sort(int start,int end){   //归并排序主函数
+    void merge(int start,int mid,int end);
+    if(start>=end){
+        compare_count++;
+        return;
+    }
+
+    int mid=(start+end)/2;
+    merge_sort(start,mid);
+    merge_sort(mid+1,end);
+    merge(start,mid,end);
+}
+
+void merge(int start,int mid,int end){
+    int left=start;
+    int right=mid+1;
+    int temp=0;
+    int *merge_sort_temp=new int[end-start+1];   //归并排序用临时数组
+
+    while(left<=mid && right<=end){
+        if(arr[left]<=arr[right]){
+            compare_count++;
+            merge_sort_temp[temp++]=arr[left++];
+        }
+        else{
+            compare_count++;
+            exchange_count++;
+            merge_sort_temp[temp++]=arr[right++];
+        }
+    }
+
+    while(left<=mid){
+        merge_sort_temp[temp++]=arr[left++];
+    }
+    while(right<=end){
+        merge_sort_temp[temp++]=arr[right++];
+    }
+
+    for(int i=start,n=0;i<=end;i++,n++){
+        arr[i]=merge_sort_temp[n];
+    }
+
+    gotoxy(0,0);
+    display(100);
+
+    delete []merge_sort_temp;
 }
 
 void menu(){
@@ -166,35 +213,26 @@ int main(int argc, char* argv[])
         menu();
         cin>>choose;
         if(choose==1){
-            system("cls");
             arr_inin(count);
-            display(100);
-            cout<<"随机数组已经生成完成，请按任意键继续......";
-            getchar(); getchar();
-            system("cls");
             insertion_sort(100);
             cout<<"随机数组已经排序完成，请按任意键继续......";
             getchar(); 
         }
         if(choose==2){
-            system("cls");
             arr_inin(count);
-            display(100);
-            cout<<"随机数组已经生成完成，请按任意键继续......";
-            getchar(); getchar();
-            system("cls");
             quick_sort(100,0,99);
             cout<<"随机数组已经排序完成，请按任意键继续......";
             getchar();
         }
         if(choose==3){
-            system("cls");
             arr_inin(count);
-            display(100);
-            cout<<"随机数组已经生成完成，请按任意键继续......";
-            getchar(); getchar();
-            system("cls");
             bubble_sort(100);
+            cout<<"随机数组已经排序完成，请按任意键继续......";
+            getchar();
+        }
+        if(choose==4){
+            arr_inin(count);
+            merge_sort(0,99);
             cout<<"随机数组已经排序完成，请按任意键继续......";
             getchar();
         }
