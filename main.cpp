@@ -17,6 +17,7 @@ int compare_count;      //比较计数器
 int exchange_count;     //交换计数器
 int array_size=2;       //数组大小  1.30   2.100   3.1000   4.5000   5.10000
 bool display_switch=true;   //设置是否显示可视化
+bool display_color_switch=true; //设置是否显示颜色
 
 int get_length(){      //返回当前选择的数组长度
     if(array_size==1){
@@ -68,55 +69,69 @@ void display(int arr[],int number_count){   //显示函数
     gotoxy(0,0);
 
     if(display_switch){
-        for(int i=30;i>0;i--){
-            printf("\r"); 
-            for(int j=0;j<number_count;j++){
-                if(arr[j]<i)
-                    printf(" ");
-                else{
-                    if(arr[j]<=3){
-                        setcolor(0xfd);
-                        printf("■");
-                    }
-                    else if(arr[j]<=6){
-                        setcolor(0xf1);
-                        printf("■");
-                    }
-                    else if(arr[j]<=9){
-                        setcolor(0xf9);
-                        printf("■");
-                    }
-                    else if(arr[j]<=12){
-                        setcolor(0xf3);
-                        printf("■");
-                    }
-                    else if(arr[j]<=15){
-                        setcolor(0xfb);
-                        printf("■");
-                    }
-                    else if(arr[j]<=18){
-                        setcolor(0xf2);
-                        printf("■");
-                    }
-                    else if(arr[j]<=21){
-                        setcolor(0xfa);
-                        printf("■");
-                    }
-                    else if(arr[j]<=24){
-                        setcolor(0xf6);
-                        printf("■");
-                    }
-                    else if(arr[j]<=27){
-                        setcolor(0xf4);
-                        printf("■");
-                    }
-                    else if(arr[j]<=30){
-                        setcolor(0xfc);
-                        printf("■");
+        if(display_color_switch){
+            for(int i=30;i>0;i--){
+                printf("\r"); 
+                for(int j=0;j<number_count;j++){
+                    if(arr[j]<i)
+                        printf(" ");
+                    else{
+                        if(arr[j]<=3){
+                            setcolor(0xfd);
+                            printf("■");
+                        }
+                        else if(arr[j]<=6){
+                            setcolor(0xf1);
+                            printf("■");
+                        }
+                        else if(arr[j]<=9){
+                            setcolor(0xf9);
+                            printf("■");
+                        }
+                        else if(arr[j]<=12){
+                            setcolor(0xf3);
+                            printf("■");
+                        }
+                        else if(arr[j]<=15){
+                            setcolor(0xfb);
+                            printf("■");
+                        }
+                        else if(arr[j]<=18){
+                            setcolor(0xf2);
+                            printf("■");
+                        }
+                        else if(arr[j]<=21){
+                            setcolor(0xfa);
+                            printf("■");
+                        }
+                        else if(arr[j]<=24){
+                            setcolor(0xf6);
+                            printf("■");
+                        }
+                        else if(arr[j]<=27){
+                            setcolor(0xf4);
+                            printf("■");
+                        }
+                        else if(arr[j]<=30){
+                            setcolor(0xfc);
+                            printf("■");
+                        }
                     }
                 }
+                cout<<endl;
             }
-            cout<<endl;
+        }
+        else{
+            for(int i=30;i>0;i--){
+                printf("\r"); 
+                for(int j=0;j<number_count;j++){
+                    if(arr[j]<i)
+                        printf(" ");
+                    else
+                        printf("■");
+                }
+                cout<<endl;
+            }
         }
     }
     setcolor(0xf0);
@@ -138,7 +153,7 @@ void init(){    //初始化程序
     HWND hWnd;
     GetConsoleTitle(title, 246);
     hWnd = FindWindow(0, title);
-    MoveWindow(hWnd,20,26,1280,720,true);//调整CMD窗口大小
+    MoveWindow(hWnd,200,200,1280,720,true);//调整CMD窗口大小
 
     system("color f0");
 
@@ -294,6 +309,7 @@ void menu(){
     cout<<"4.归并排序"<<endl;
     cout<<endl;
     cout<<"8.切换排序数组大小(只有规模100可用可视化)"<<endl;
+    cout<<"9.设置(beta)"<<endl;
     cout<<"0.退出"<<endl;
     cout<<"请输入你的选择:";
 }
@@ -310,6 +326,13 @@ void array_size_menu(){
     cout<<"请输入你的选择:";
 }
 
+void setting_menu(){
+    system("cls");
+    cout<<"设置(beta)"<<endl;
+    cout<<"1.图形化排序颜色开/关(禁用它以优化绘制性能)"<<endl;
+    cout<<"0.退出"<<endl;
+    cout<<"请输入你的选择:";
+}
 
 int main(int argc, char* argv[])
 {
@@ -318,7 +341,8 @@ int main(int argc, char* argv[])
     srand((unsigned)time(NULL));
     int choose=3;
     int size_choose=1;
-    bool is_choose=false;   //储存选择状态
+    int setting_choose=1;
+    char confirm='o';
     while(choose!=0){
         menu();
         cin>>choose;
@@ -347,7 +371,7 @@ int main(int argc, char* argv[])
             getchar();
         }
         if(choose==8){
-            while(size_choose!=0 || is_choose){
+            while(size_choose!=0){
                 array_size_menu();
                 cin>>size_choose;
                 if(size_choose>=1 && size_choose<=5){
@@ -358,6 +382,34 @@ int main(int argc, char* argv[])
                         display_switch=true;
 
                     break;
+                }
+            }
+        }
+        if(choose==9){
+            while(setting_choose!=0){
+                setting_menu();
+                cin>>setting_choose;
+                if(setting_choose==1){
+                    while(1){
+                        system("cls");
+                        cout<<"图形化排序颜色开/关(禁用它以优化绘制性能)"<<endl;
+                        cout<<"当前:";
+                        if(display_color_switch==true)
+                            cout<<"开"<<endl;
+                        else
+                            cout<<"关"<<endl;
+                        
+                        cout<<"请选择:Y/N:";
+                        cin>>confirm;
+                        if(confirm=='Y' || confirm=='y'){
+                            display_color_switch=true;
+                            break;
+                        }
+                        if(confirm=='N' || confirm=='n'){
+                            display_color_switch=false;
+                            break;
+                        }
+                    }
                 }
             }
         }
