@@ -300,7 +300,7 @@ void merge(int arr[],int start,int mid,int end){
 
 void menu(){
     system("cls");
-    cout<<"可视化排序算法v1.3"<<endl;
+    cout<<"可视化排序算法v1.3.1"<<endl;
     cout<<"当前选择数组大小:";
     cout<<get_length()<<endl;
     cout<<"1.插入排序"<<endl;
