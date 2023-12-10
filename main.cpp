@@ -65,13 +65,37 @@ int * get_array(){  //返回当前选择的数组指针
         return arr100;
 }
 
+void get_sort_name(int sort){  //多排序比较-排序类型1      排序类型  0=undefined 1=插入排序 2=快速排序 3=冒泡排序 4=归并排序         未实现:5=希尔排序 6=选择排序 7=堆排序
+    if(sort==1){
+        cout<<"插入排序";
+    }
+    else if(sort==2){
+        cout<<"快速排序";
+    }
+    else if(sort==3){
+        cout<<"冒泡排序";
+    }
+    else if(sort==4){
+        cout<<"归并排序";
+    }
+    else if(sort==5){
+        cout<<"希尔排序";
+    }
+    else if(sort==6){
+        cout<<"选择排序";
+    }
+    else if(sort==7){
+        cout<<"堆排序";
+    }
+}
+
 void gotoxy(short x, short y) {     //光标复位
 	COORD pos = {x,y};
 	HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
 	SetConsoleCursorPosition(hOut, pos);
 }
 
-void display(int arr[],int number_count){   //可视化显示函数
+void display(int arr[],int number_count,int sort){   //可视化显示函数
     gotoxy(0,0);        //光标复位
 
     if(display_switch){
@@ -141,6 +165,11 @@ void display(int arr[],int number_count){   //可视化显示函数
         }
     }
     setcolor(0xf0);
+    if(sort!=0){
+        cout<<"当前排序:";
+        get_sort_name(sort);
+        cout<<endl;
+    }
     cout<<"当前比较总数:"<<compare_count<<endl;
     cout<<"当前交换总数:"<<exchange_count<<endl;
 }
@@ -176,7 +205,7 @@ void arr_init(int arr[],int count){     //初始化数组
     compare_count=0;
     exchange_count=0;
 
-    display(get_array(),get_length());
+    display(get_array(),get_length(),0);
     cout<<"随机数组已经生成完成，请按任意键继续......";
     getchar(); getchar();
     system("cls");
@@ -195,7 +224,7 @@ void insertion_sort(int arr[],int len)  //插入排序
             arr[j+1]=arr[j];
             j--;
         }
-        display(get_array(),len);
+        display(get_array(),len,1);
         exchange_count++;
         arr[j+1]=key;
     }
@@ -227,14 +256,14 @@ void quick_sort(int arr[],int len,int start,int end){       //快速排序
             temp=arr[left_pointer];
             arr[left_pointer]=arr[right_pointer];
             arr[right_pointer]=temp;
-            display(get_array(),len);
+            display(get_array(),len,2);
         }
     }
     exchange_count++;
 
     arr[start]=arr[left_pointer];
     arr[left_pointer]=base_number;
-    display(get_array(),len);
+    display(get_array(),len,2);
 
     quick_sort(get_array(),get_length(),start,left_pointer-1);
     quick_sort(get_array(),get_length(),left_pointer+1,end);
@@ -252,11 +281,11 @@ void bubble_sort(int arr[],int len){        //冒泡排序
                 arr[j+1]=temp;
             }
         }
-        display(get_array(),len);
+        display(get_array(),len,3);
     }
 }
 
-void merge_sort(int start,int end){   //归并排序主函数
+void merge_sort(int arr[],int start,int end){   //归并排序主函数
     void merge(int arr[],int start,int mid,int end);
     if(start>=end){
         compare_count++;
@@ -264,9 +293,9 @@ void merge_sort(int start,int end){   //归并排序主函数
     }
 
     int mid=(start+end)/2;
-    merge_sort(start,mid);
-    merge_sort(mid+1,end);
-    merge(get_array(),start,mid,end);
+    merge_sort(arr,start,mid);
+    merge_sort(arr,mid+1,end);
+    merge(arr,start,mid,end);
 }
 
 void merge(int arr[],int start,int mid,int end){        //归并排序  
@@ -298,7 +327,7 @@ void merge(int arr[],int start,int mid,int end){        //归并排序
         arr[i]=merge_sort_temp[n];
     }
 
-    display(get_array(),get_length());
+    display(get_array(),get_length(),4);
 
     delete []merge_sort_temp;
 }
@@ -331,12 +360,13 @@ void visible_menu(){        //可视化选择菜单
     cout<<"请输入你的选择:";
 }
 
-void compare_menu(){
+void compare_menu(int current){
     system("cls"); 
     cout<<"双排序比较选择菜单"<<endl;
     cout<<"当前选择数组大小:";
     cout<<get_length()<<endl;
     cout<<"请选择第";
+    cout<<current;
     cout<<"个排序"<<endl;
     cout<<"1.插入排序"<<endl;
     cout<<"2.快速排序"<<endl;
@@ -423,14 +453,55 @@ void visible_menu_function(){   //可视化菜单选项选择功能
         }
         if(choose==4){
             arr_init(get_array(),get_length());
-            merge_sort(0,get_length()-1);
+            merge_sort(get_array(),0,get_length()-1);
             cout<<"随机数组已经排序完成，请按任意键继续......";
             getchar();
+        }
+        if(choose==5){
+            
+        }
+        if(choose==6){
+            
+        }
+        if(choose==7){
+            
         }
         if(choose==9){
             setting_function();
         }
     }
+}
+
+void compare_funcion(int sort,int *using_arr){
+        if(sort==1){
+            insertion_sort(using_arr,get_length());
+            cout<<"随机数组已经排序完成，请按任意键继续......";
+            getchar(); 
+        }
+        else if(sort==2){
+            quick_sort(using_arr,get_length(),0,get_length()-1);
+            cout<<"随机数组已经排序完成，请按任意键继续......";
+            getchar();
+        }
+        else if(sort==3){
+            bubble_sort(using_arr,get_length());
+            cout<<"随机数组已经排序完成，请按任意键继续......";
+            getchar();
+        }
+        else if(sort==4){
+            merge_sort(using_arr,0,get_length()-1);
+            cout<<"随机数组已经排序完成，请按任意键继续......";
+            getchar();
+        }
+        else if(sort==5){
+            
+        }
+        else if(sort==6){
+           
+        }
+        else if(sort==7){
+            
+        }
 }
 
 void compare_menu_function(){
@@ -440,8 +511,7 @@ void compare_menu_function(){
     int compare_count_temp=0;    //比较计数器缓存
     int exchange_count_temp=0;  //交换计数器缓存
     while(choose!=0){
-        compare_menu();
-        cout<<"current:"<<current_select<<endl;
+        compare_menu(current_select);
         cin>>choose;
         if(current_select==1 && choose>=1 && choose<=7){
             if(choose==1){
@@ -476,24 +546,45 @@ void compare_menu_function(){
         }
     }
     if(current_select==3){
-        if(sort_1==1){
-            arr_init(get_array(),get_length());
-            insertion_sort(get_array(),get_length());
-            cout<<"随机数组已经排序完成，请按任意键继续......";
-            getchar(); 
+        arr_init(get_array(),get_length());
+        int *used_arr=get_array();
+
+        int *copy_arr=new int[10000];
+        for(int i=0;i<get_length();i++){
+            copy_arr[i]=used_arr[i];
         }
+
+        compare_funcion(sort_1,used_arr);
         compare_count_temp=compare_count;
         exchange_count_temp=exchange_count;
-        if(sort_2==1){
-            arr_init(get_array(),get_length());
-            insertion_sort(get_array(),get_length());
-            cout<<"随机数组已经排序完成，请按任意键继续......";
-            getchar(); 
-        }
-        cout<<"sort-1:com:"<<compare_count_temp<<"ex:"<<exchange_count_temp<<endl;
-        cout<<"sort-2:com:"<<compare_count<<"ex:"<<exchange_count<<endl;
-        getchar();getchar();
+
+        system("cls");      //清屏
+        cin.clear();        //清空cin缓冲区
+
+        compare_count=0;
+        exchange_count=0;
+
+        display(get_array(),get_length(),0);
+        cout<<"随机数组已经生成完成，请按任意键继续......";
+        getchar();
+        system("cls");
+
+        compare_funcion(sort_2,copy_arr);
+        system("cls");
+        cout<<endl<<"数组大小:"<<get_length()<<endl;
+        cout<<"排序1:";
+        get_sort_name(sort_1);
+        cout<<endl;
+        cout<<"比较总数:"<<compare_count_temp<<endl;
+        cout<<"交换总数:"<<exchange_count_temp<<endl<<endl;
+        cout<<"排序2:";
+        get_sort_name(sort_2);
+        cout<<endl;
+        cout<<"比较总数:"<<compare_count<<endl;
+        cout<<"交换总数:"<<exchange_count<<endl;
+        getchar();
         display_switch=true;
+        delete []copy_arr;
     }
 }
 
