@@ -1,14 +1,18 @@
+//GPL 3.0 LINCENCE
+//排序函数规范:     sort_example(int arr[],int count  (可选int start,int end)  )
+//请使用最新版本的mingw64-g++编译;      编译命令:g++ -Wall -o output ./main.cpp
+//请双击打开程序，否则会出现初始化错误的问题
+
 #include <iostream>
 #include <cstdio>
 #include <time.h>       //时间
 #include <thread>       //线程暂停
 #include <chrono>
 #include <windows.h>    //cmd命令库
-
-#define setcolor(a) SetConsoleTextAttribute( GetStdHandle(STD_OUTPUT_HANDLE),a);
+#define setcolor(a) SetConsoleTextAttribute( GetStdHandle(STD_OUTPUT_HANDLE),a);    //定义控制台调色函数 用法:a=两位十六进制数(0xAB)    A=背景色    B=字体色
+#define sleep_mircosecends(a) this_thread::sleep_for(chrono::milliseconds(a));      //定义线程暂停函数   用法:sleep_mircosecends(a)     a=毫秒
 using namespace std;
-//int arr[100];
-int arr30[30];
+int arr30[30];          //以下为不同大小的待排序数组
 int arr100[100];
 int arr1000[1000];
 int arr5000[5000];
@@ -66,11 +70,11 @@ void gotoxy(short x, short y) {     //光标复位
 }
 
 void display(int arr[],int number_count){   //显示函数
-    gotoxy(0,0);
+    gotoxy(0,0);        //光标复位
 
     if(display_switch){
         if(display_color_switch){
-            for(int i=30;i>0;i--){
+            for(int i=30;i>0;i--){      //颜色显示
                 printf("\r"); 
                 for(int j=0;j<number_count;j++){
                     if(arr[j]<i)
@@ -121,7 +125,7 @@ void display(int arr[],int number_count){   //显示函数
                 cout<<endl;
             }
         }
-        else{
+        else{           //黑白显示
             for(int i=30;i>0;i--){
                 printf("\r"); 
                 for(int j=0;j<number_count;j++){
@@ -139,7 +143,7 @@ void display(int arr[],int number_count){   //显示函数
     cout<<"当前交换总数:"<<exchange_count<<endl;
 }
 
-void init(){    //初始化程序
+void init(){    //程序初始化
     SetConsoleOutputCP(65001);//设置CMD为UTF8
 
     HANDLE hOut;
@@ -162,9 +166,9 @@ void init(){    //初始化程序
 }
 
 void arr_init(int arr[],int count){     //初始化数组
-    system("cls");
-    cin.clear(); 
-    for(int i=0;i<count;i++){
+    system("cls");      //清屏
+    cin.clear();        //清空cin缓冲区
+    for(int i=0;i<count;i++){       //待排序数组赋值随机数
         arr[i]=rand()%31+1;
     }
     compare_count=0;
@@ -192,7 +196,6 @@ void insertion_sort(int arr[],int len)  //插入排序
         display(get_array(),len);
         exchange_count++;
         arr[j+1]=key;
-        //this_thread::sleep_for(chrono::milliseconds(100)); 
     }
 }
 
@@ -235,7 +238,7 @@ void quick_sort(int arr[],int len,int start,int end){       //快速排序
     quick_sort(get_array(),get_length(),left_pointer+1,end);
 }
 
-void bubble_sort(int arr[],int len){
+void bubble_sort(int arr[],int len){        //冒泡排序
     int temp=0;
     for(int i=0;i<len;i++){
         for(int j=0;j<len-1;j++){
