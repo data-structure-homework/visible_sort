@@ -334,7 +334,7 @@ void merge(int arr[],int start,int mid,int end){        //归并排序
 
 void main_menu(){       //主菜单
     system("cls");
-    cout<<"可视化排序算法v1.3.1"<<endl;
+    cout<<"可视化排序算法v1.4"<<endl;
     cout<<"当前选择数组大小:";
     cout<<get_length()<<endl;
     cout<<"1.单排序可视化演示"<<endl;
