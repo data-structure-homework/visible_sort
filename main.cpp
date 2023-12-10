@@ -71,7 +71,7 @@ void gotoxy(short x, short y) {     //光标复位
 	SetConsoleCursorPosition(hOut, pos);
 }
 
-void display(int arr[],int number_count){   //显示函数
+void display(int arr[],int number_count){   //可视化显示函数
     gotoxy(0,0);        //光标复位
 
     if(display_switch){
@@ -269,7 +269,7 @@ void merge_sort(int start,int end){   //归并排序主函数
     merge(get_array(),start,mid,end);
 }
 
-void merge(int arr[],int start,int mid,int end){
+void merge(int arr[],int start,int mid,int end){        //归并排序  
     int left=start;
     int right=mid+1;
     int temp=0;
@@ -303,7 +303,7 @@ void merge(int arr[],int start,int mid,int end){
     delete []merge_sort_temp;
 }
 
-void main_menu(){
+void main_menu(){       //主菜单
     system("cls");
     cout<<"可视化排序算法v1.3.1"<<endl;
     cout<<"当前选择数组大小:";
@@ -317,9 +317,9 @@ void main_menu(){
     cout<<"请输入你的选择:";
 }
 
-void menu(){
-    system("cls");
-    //cout<<"可视化排序算法v1.3.1"<<endl;
+void visible_menu(){        //可视化选择菜单
+    system("cls"); 
+    cout<<"可视化排序选择菜单"<<endl;
     cout<<"当前选择数组大小:";
     cout<<get_length()<<endl;
     cout<<"1.插入排序"<<endl;
@@ -327,13 +327,27 @@ void menu(){
     cout<<"3.冒泡排序"<<endl;
     cout<<"4.归并排序"<<endl;
     cout<<endl;
-    //cout<<"8.切换排序数组大小(只有规模100可用可视化)"<<endl;
-    //cout<<"9.设置(beta)"<<endl;
     cout<<"0.退出"<<endl;
     cout<<"请输入你的选择:";
 }
 
-void array_size_menu(){
+void compare_menu(){
+    system("cls"); 
+    cout<<"双排序比较选择菜单"<<endl;
+    cout<<"当前选择数组大小:";
+    cout<<get_length()<<endl;
+    cout<<"请选择第";
+    cout<<"个排序"<<endl;
+    cout<<"1.插入排序"<<endl;
+    cout<<"2.快速排序"<<endl;
+    cout<<"3.冒泡排序"<<endl;
+    cout<<"4.归并排序"<<endl;
+    cout<<endl;
+    cout<<"0.退出"<<endl;
+    cout<<"请输入你的选择:";
+}
+
+void array_size_menu(){     //数组大小选择菜单
     system("cls");
     cout<<"选择数组大小"<<endl;
     cout<<"1.30"<<endl;
@@ -345,7 +359,7 @@ void array_size_menu(){
     cout<<"请输入你的选择:";
 }
 
-void setting_menu(){
+void setting_menu(){    //设置菜单
     system("cls");
     cout<<"设置(beta)"<<endl;
     cout<<"1.图形化排序颜色开/关(禁用它以优化绘制性能)"<<endl;
@@ -353,25 +367,41 @@ void setting_menu(){
     cout<<"请输入你的选择:";
 }
 
-void menu_function(){   //主菜单选项选择功能
-
-}
-
 void setting_function(){    //设置选项选择功能
-
-}
-
-int main(int argc, char* argv[])
-{
-    //const int count=100;
-    init();
-    srand((unsigned)time(NULL));
-    int choose=3;
-    int size_choose=1;
     int setting_choose=1;
     char confirm='o';
+    while(setting_choose!=0){
+                setting_menu();
+                cin>>setting_choose;
+                if(setting_choose==1){
+                    while(1){
+                        system("cls");
+                        cout<<"图形化排序颜色开/关(禁用它以优化绘制性能)"<<endl;
+                        cout<<"当前:";
+                        if(display_color_switch==true)
+                            cout<<"开"<<endl;
+                        else
+                            cout<<"关"<<endl;
+                        
+                        cout<<"请选择:Y/N:";
+                        cin>>confirm;
+                        if(confirm=='Y' || confirm=='y'){
+                            display_color_switch=true;
+                            break;
+                        }
+                        if(confirm=='N' || confirm=='n'){
+                            display_color_switch=false;
+                            break;
+                        }
+                    }
+                }
+            }
+}
+
+void visible_menu_function(){   //可视化菜单选项选择功能
+    int choose=1;
     while(choose!=0){
-        menu();
+        visible_menu();
         cin>>choose;
         if(choose==1){
             arr_init(get_array(),get_length());
@@ -397,6 +427,91 @@ int main(int argc, char* argv[])
             cout<<"随机数组已经排序完成，请按任意键继续......";
             getchar();
         }
+        if(choose==9){
+            setting_function();
+        }
+    }
+}
+
+void compare_menu_function(){
+    display_switch=false;
+    int choose=1;
+    int current_select=1;   //当前选择序号  1=第一个 2=第二个 3=已选完
+    int compare_count_temp=0;    //比较计数器缓存
+    int exchange_count_temp=0;  //交换计数器缓存
+    while(choose!=0){
+        compare_menu();
+        cout<<"current:"<<current_select<<endl;
+        cin>>choose;
+        if(current_select==1 && choose>=1 && choose<=7){
+            if(choose==1){
+                sort_1=1;
+            }
+            if(choose==2){
+                sort_1=2;
+            }
+            if(choose==3){
+                sort_1=3;
+            }
+            if(choose==4){
+                sort_1=4;
+            }
+            current_select++;
+        }
+        else if(current_select==2 && choose>=1 && choose<=7){
+            if(choose==1){
+                sort_2=1;
+            }
+            if(choose==2){
+                sort_2=2;
+            }
+            if(choose==3){
+                sort_2=3;
+            }
+            if(choose==4){
+                sort_2=4;
+            }
+            current_select++;
+            break;
+        }
+    }
+    if(current_select==3){
+        if(sort_1==1){
+            arr_init(get_array(),get_length());
+            insertion_sort(get_array(),get_length());
+            cout<<"随机数组已经排序完成，请按任意键继续......";
+            getchar(); 
+        }
+        compare_count_temp=compare_count;
+        exchange_count_temp=exchange_count;
+        if(sort_2==1){
+            arr_init(get_array(),get_length());
+            insertion_sort(get_array(),get_length());
+            cout<<"随机数组已经排序完成，请按任意键继续......";
+            getchar(); 
+        }
+        cout<<"sort-1:com:"<<compare_count_temp<<"ex:"<<exchange_count_temp<<endl;
+        cout<<"sort-2:com:"<<compare_count<<"ex:"<<exchange_count<<endl;
+        getchar();getchar();
+        display_switch=true;
+    }
+}
+
+int main(int argc, char* argv[])
+{
+    init();
+    srand((unsigned)time(NULL));
+    int choose=3;
+    int size_choose=1;
+    while(choose!=0){
+        main_menu();
+        cin>>choose;
+        if(choose==1){
+            visible_menu_function();
+        }
+        if(choose==2){
+            compare_menu_function();
+        }
         if(choose==8){
             while(size_choose!=0){
                 array_size_menu();
@@ -409,34 +524,6 @@ int main(int argc, char* argv[])
                         display_switch=true;
 
                     break;
-                }
-            }
-        }
-        if(choose==9){
-            while(setting_choose!=0){
-                setting_menu();
-                cin>>setting_choose;
-                if(setting_choose==1){
-                    while(1){
-                        system("cls");
-                        cout<<"图形化排序颜色开/关(禁用它以优化绘制性能)"<<endl;
-                        cout<<"当前:";
-                        if(display_color_switch==true)
-                            cout<<"开"<<endl;
-                        else
-                            cout<<"关"<<endl;
-                        
-                        cout<<"请选择:Y/N:";
-                        cin>>confirm;
-                        if(confirm=='Y' || confirm=='y'){
-                            display_color_switch=true;
-                            break;
-                        }
-                        if(confirm=='N' || confirm=='n'){
-                            display_color_switch=false;
-                            break;
-                        }
-                    }
                 }
             }
         }
