@@ -20,6 +20,8 @@ int arr10000[10000];
 int compare_count;      //比较计数器
 int exchange_count;     //交换计数器
 int array_size=2;       //数组大小  1.30   2.100   3.1000   4.5000   5.10000
+int sort_1=0;           //多排序比较-排序类型1      排序类型  0=undefined 1=插入排序 2=快速排序 3=冒泡排序 4=归并排序         未实现:5=希尔排序 6=选择排序 7=堆排序
+int sort_2=0;           //多排序比较-排序类型2
 bool display_switch=true;   //设置是否显示可视化
 bool display_color_switch=true; //设置是否显示颜色
 
@@ -301,9 +303,23 @@ void merge(int arr[],int start,int mid,int end){
     delete []merge_sort_temp;
 }
 
-void menu(){
+void main_menu(){
     system("cls");
     cout<<"可视化排序算法v1.3.1"<<endl;
+    cout<<"当前选择数组大小:";
+    cout<<get_length()<<endl;
+    cout<<"1.单排序可视化演示"<<endl;
+    cout<<"2.双排序效率对比"<<endl;
+    cout<<endl;
+    cout<<"8.切换排序数组大小(只有规模100可用可视化)"<<endl;
+    cout<<"9.设置(beta)"<<endl;
+    cout<<"0.退出"<<endl;
+    cout<<"请输入你的选择:";
+}
+
+void menu(){
+    system("cls");
+    //cout<<"可视化排序算法v1.3.1"<<endl;
     cout<<"当前选择数组大小:";
     cout<<get_length()<<endl;
     cout<<"1.插入排序"<<endl;
@@ -311,8 +327,8 @@ void menu(){
     cout<<"3.冒泡排序"<<endl;
     cout<<"4.归并排序"<<endl;
     cout<<endl;
-    cout<<"8.切换排序数组大小(只有规模100可用可视化)"<<endl;
-    cout<<"9.设置(beta)"<<endl;
+    //cout<<"8.切换排序数组大小(只有规模100可用可视化)"<<endl;
+    //cout<<"9.设置(beta)"<<endl;
     cout<<"0.退出"<<endl;
     cout<<"请输入你的选择:";
 }
@@ -335,6 +351,14 @@ void setting_menu(){
     cout<<"1.图形化排序颜色开/关(禁用它以优化绘制性能)"<<endl;
     cout<<"0.退出"<<endl;
     cout<<"请输入你的选择:";
+}
+
+void menu_function(){   //主菜单选项选择功能
+
+}
+
+void setting_function(){    //设置选项选择功能
+
 }
 
 int main(int argc, char* argv[])
