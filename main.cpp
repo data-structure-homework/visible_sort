@@ -348,6 +348,7 @@ void Shell_sort(int arr[],int len){             //希尔排序
                 {
                     arr[end+gap]=arr[end];
                     end-=gap;
+                    display(arr,len,4);
                 }
                 else 
                 {
