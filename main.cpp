@@ -332,6 +332,36 @@ void merge(int arr[],int start,int mid,int end){        //归并排序
     delete []merge_sort_temp;
 }
 
+void Shell_sort(int arr[],int len){             //希尔排序
+    int gap=len;
+    while(gap>1)
+    {
+        gap=gap/2;
+        for(int i=0;i<len-gap;++i)
+        {
+            int end=i;
+            int tem=arr[end+gap];
+            while(end>=0)
+            {
+                compare_count++;
+                if(tem<arr[end])
+                {
+                    arr[end+gap]=arr[end];
+                    end-=gap;
+                }
+                else 
+                {
+                    break;
+                }
+            }
+            exchange_count++;
+            arr[end+gap]=tem;
+        }
+        display(arr,len,4);
+    }
+
+}
+
 void main_menu(){       //主菜单
     system("cls");
     cout<<"可视化排序算法v1.4.1"<<endl;
@@ -355,6 +385,7 @@ void visible_menu(){        //可视化选择菜单
     cout<<"2.快速排序"<<endl;
     cout<<"3.冒泡排序"<<endl;
     cout<<"4.归并排序"<<endl;
+    cout<<"5.希尔排序"<<endl;
     cout<<endl;
     cout<<"0.退出"<<endl;
     cout<<"请输入你的选择:";
@@ -372,6 +403,7 @@ void compare_menu(int current){
     cout<<"2.快速排序"<<endl;
     cout<<"3.冒泡排序"<<endl;
     cout<<"4.归并排序"<<endl;
+    cout<<"5.希尔排序"<<endl;
     cout<<endl;
     cout<<"0.退出"<<endl;
     cout<<"请输入你的选择:";
@@ -460,7 +492,10 @@ void visible_menu_function(){   //可视化菜单选项选择功能
             getchar();
         }
         if(choose==5){
-            
+            arr_init(get_array(),get_length());
+            Shell_sort(get_array(),get_length()-1);
+            cout<<"随机数组已经排序完成，请按任意键继续......";
+            getchar();
         }
         if(choose==6){
             
@@ -493,7 +528,9 @@ void compare_funcion(int sort,int *using_arr){
             getchar();
         }
         else if(sort==5){
-            
+            Shell_sort(using_arr,get_length()-1);
+            cout<<"随机数组已经排序完成，请按任意键继续......";
+            getchar();
         }
         else if(sort==6){
            
@@ -525,6 +562,9 @@ void compare_menu_function(){
             if(choose==4){
                 sort_1=4;
             }
+            if(choose==5){
+                sort_1=5;
+            }
             current_select++;
         }
         else if(current_select==2 && choose>=1 && choose<=7){
@@ -539,6 +579,9 @@ void compare_menu_function(){
             }
             if(choose==4){
                 sort_2=4;
+            }
+            if(choose==5){
+                sort_2=5;
             }
             current_select++;
             break;
