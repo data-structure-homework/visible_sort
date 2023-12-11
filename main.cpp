@@ -224,7 +224,7 @@ void insertion_sort(int arr[],int len)  //插入排序
             arr[j+1]=arr[j];
             j--;
         }
-        display(get_array(),len,1);
+        display(arr,len,1);
         exchange_count++;
         arr[j+1]=key;
     }
@@ -256,17 +256,17 @@ void quick_sort(int arr[],int len,int start,int end){       //快速排序
             temp=arr[left_pointer];
             arr[left_pointer]=arr[right_pointer];
             arr[right_pointer]=temp;
-            display(get_array(),len,2);
+            display(arr,len,2);
         }
     }
     exchange_count++;
 
     arr[start]=arr[left_pointer];
     arr[left_pointer]=base_number;
-    display(get_array(),len,2);
+    display(arr,len,2);
 
-    quick_sort(get_array(),get_length(),start,left_pointer-1);
-    quick_sort(get_array(),get_length(),left_pointer+1,end);
+    quick_sort(arr,get_length(),start,left_pointer-1);
+    quick_sort(arr,get_length(),left_pointer+1,end);
 }
 
 void bubble_sort(int arr[],int len){        //冒泡排序
@@ -281,7 +281,7 @@ void bubble_sort(int arr[],int len){        //冒泡排序
                 arr[j+1]=temp;
             }
         }
-        display(get_array(),len,3);
+        display(arr,len,3);
     }
 }
 
@@ -327,20 +327,20 @@ void merge(int arr[],int start,int mid,int end){        //归并排序
         arr[i]=merge_sort_temp[n];
     }
 
-    display(get_array(),get_length(),4);
+    display(arr,get_length(),4);
 
     delete []merge_sort_temp;
 }
 
 void main_menu(){       //主菜单
     system("cls");
-    cout<<"可视化排序算法v1.4"<<endl;
+    cout<<"可视化排序算法v1.4.1"<<endl;
     cout<<"当前选择数组大小:";
     cout<<get_length()<<endl;
-    cout<<"1.单排序可视化演示"<<endl;
+    cout<<"1.单排序可视化演示(将自动切换数组大小至100)"<<endl;
     cout<<"2.双排序效率对比"<<endl;
     cout<<endl;
-    cout<<"8.切换排序数组大小(只有规模100可用可视化)"<<endl;
+    cout<<"8.切换排序数组大小"<<endl;
     cout<<"9.设置(beta)"<<endl;
     cout<<"0.退出"<<endl;
     cout<<"请输入你的选择:";
@@ -429,6 +429,8 @@ void setting_function(){    //设置选项选择功能
 }
 
 void visible_menu_function(){   //可视化菜单选项选择功能
+    array_size=2;
+    display_switch=true;
     int choose=1;
     while(choose!=0){
         visible_menu();
@@ -465,9 +467,6 @@ void visible_menu_function(){   //可视化菜单选项选择功能
         }
         if(choose==7){
             
-        }
-        if(choose==9){
-            setting_function();
         }
     }
 }
@@ -617,6 +616,9 @@ int main(int argc, char* argv[])
                     break;
                 }
             }
+        }
+        if(choose==9){
+            setting_function();
         }
     }
     return 0;
