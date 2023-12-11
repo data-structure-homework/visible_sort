@@ -22,7 +22,7 @@ int exchange_count;     //交换计数器
 int array_size=2;       //数组大小  1.30   2.100   3.1000   4.5000   5.10000
 int sort_1=0;           //多排序比较-排序类型1      排序类型  0=undefined 1=插入排序 2=快速排序 3=冒泡排序 4=归并排序         未实现:5=希尔排序 6=选择排序 7=堆排序
 int sort_2=0;           //多排序比较-排序类型2
-bool display_switch=true;   //设置是否显示可视化
+bool display_switch=true;  //设置是否显示可视化
 bool display_color_switch=true; //设置是否显示颜色
 
 int get_length(){      //返回当前选择的数组长度
