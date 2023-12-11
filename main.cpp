@@ -22,7 +22,7 @@ int exchange_count;     //交换计数器
 int array_size=2;       //数组大小  1.30   2.100   3.1000   4.5000   5.10000
 int sort_1=0;           //多排序比较-排序类型1      排序类型  0=undefined 1=插入排序 2=快速排序 3=冒泡排序 4=归并排序         未实现:5=希尔排序 6=选择排序 7=堆排序
 int sort_2=0;           //多排序比较-排序类型2
-bool display_switch=true;   //设置是否显示可视化
+bool display_switch=true;  //设置是否显示可视化
 bool display_color_switch=true; //设置是否显示颜色
 
 int get_length(){      //返回当前选择的数组长度
@@ -332,6 +332,36 @@ void merge(int arr[],int start,int mid,int end){        //归并排序
     delete []merge_sort_temp;
 }
 
+void Shell_sort(int arr[],int len){             //希尔排序
+    int gap=len;
+    while(gap>1)
+    {
+        gap=gap/2;
+        for(int i=0;i<len-gap;++i)
+        {
+            int end=i;
+            int tem=arr[end+gap];
+            while(end>=0)
+            {
+                compare_count++;
+                if(tem<arr[end])
+                {
+                    arr[end+gap]=arr[end];
+                    end-=gap;
+                }
+                else 
+                {
+                    break;
+                }
+            }
+            exchange_count++;
+            arr[end+gap]=tem;
+        }
+        display(arr,len,4);
+    }
+
+}
+
 void main_menu(){       //主菜单
     system("cls");
     cout<<"可视化排序算法v1.4.1"<<endl;
@@ -355,6 +385,7 @@ void visible_menu(){        //可视化选择菜单
     cout<<"2.快速排序"<<endl;
     cout<<"3.冒泡排序"<<endl;
     cout<<"4.归并排序"<<endl;
+    cout<<"5.希尔排序"<<endl;
     cout<<endl;
     cout<<"0.退出"<<endl;
     cout<<"请输入你的选择:";
@@ -372,6 +403,7 @@ void compare_menu(int current){
     cout<<"2.快速排序"<<endl;
     cout<<"3.冒泡排序"<<endl;
     cout<<"4.归并排序"<<endl;
+    cout<<"5.希尔排序"<<endl;
     cout<<endl;
     cout<<"0.退出"<<endl;
     cout<<"请输入你的选择:";
@@ -460,7 +492,10 @@ void visible_menu_function(){   //可视化菜单选项选择功能
             getchar();
         }
         if(choose==5){
-            
+            arr_init(get_array(),get_length());
+            Shell_sort(get_array(),get_length()-1);
+            cout<<"随机数组已经排序完成，请按任意键继续......";
+            getchar();
         }
         if(choose==6){
             
@@ -493,7 +528,9 @@ void compare_funcion(int sort,int *using_arr){
             getchar();
         }
         else if(sort==5){
-            
+            Shell_sort(using_arr,get_length()-1);
+            cout<<"随机数组已经排序完成，请按任意键继续......";
+            getchar();
         }
         else if(sort==6){
            
@@ -525,6 +562,9 @@ void compare_menu_function(){
             if(choose==4){
                 sort_1=4;
             }
+            if(choose==5){
+                sort_1=5;
+            }
             current_select++;
         }
         else if(current_select==2 && choose>=1 && choose<=7){
@@ -539,6 +579,9 @@ void compare_menu_function(){
             }
             if(choose==4){
                 sort_2=4;
+            }
+            if(choose==5){
+                sort_2=5;
             }
             current_select++;
             break;
