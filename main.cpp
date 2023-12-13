@@ -188,7 +188,7 @@ void init(){    //程序初始化
     HWND hWnd;
     GetConsoleTitle(title, 246);
     hWnd = FindWindow(0, title);
-    MoveWindow(hWnd,20,20,1280,800,true);//调整CMD窗口大小
+    MoveWindow(hWnd,20,20,1280,900,true);//调整CMD窗口大小
 
     system("color f0");
 
@@ -418,16 +418,10 @@ void heapsort(int arr[],int len){   //堆排序主函数
     for(int i=len/2-1;i>=0;i--){
         heat_adjust(arr,i,len);
     }
-    cout<<arr[0]<<endl;
-    getchar();
 
     for(int i=len-1;i>=1;i--){
-        int temp=arr[0];
-        arr[0]=arr[i];
-        arr[i]=temp;
         display(arr,len,7);
-        //getchar();
-        //swap(arr[i],arr[0]);
+        swap(arr[i],arr[0]);
         exchange_count++;
         heat_adjust(arr,0,i);
     }
@@ -435,64 +429,73 @@ void heapsort(int arr[],int len){   //堆排序主函数
 
 void main_menu(){       //主菜单
     system("cls");
-    cout<<"可视化排序算法v1.4.3"<<endl;
-    cout<<"当前选择数组大小:";
-    cout<<get_length()<<endl;
-    cout<<"1.单排序可视化演示(将自动切换数组大小至100)"<<endl;
-    cout<<"2.双排序效率对比"<<endl;
-    cout<<endl;
-    cout<<"8.切换排序数组大小"<<endl;
-    cout<<"9.设置(beta)"<<endl;
-    cout<<"0.退出"<<endl;
+    cout<<"________________________________________________"<<endl;
+    cout<<"|可视化排序算法v1.5                             |"<<endl;
+    cout<<"|当前数组大小:";
+    cout<<get_length()<<"\t\t\t\t|"<<endl;
+    cout<<"|                                               |"<<endl;
+    cout<<"|1.单排序可视化演示(将自动切换数组大小至100)    |"<<endl;
+    cout<<"|2.双排序效率对比                               |"<<endl;
+    cout<<"|                                               |"<<endl;
+    cout<<"|4.切换排序数组大小                             |"<<endl;
+    cout<<"|5.设置(beta)                                   |"<<endl;
+    cout<<"|6.关于本程序                                   |"<<endl;
+    cout<<"|                                               |"<<endl;
+    cout<<"|0.退出                                         |"<<endl;
+    cout<<"-------------------------------------------------"<<endl<<endl;
     cout<<"请输入你的选择:";
 }
 
 void visible_menu(){        //可视化选择菜单
     system("cls"); 
-    cout<<"可视化排序选择菜单"<<endl;
-    cout<<"当前选择数组大小:";
-    cout<<get_length()<<endl;
-    cout<<"1.插入排序"<<endl;
-    cout<<"2.快速排序"<<endl;
-    cout<<"3.冒泡排序"<<endl;
-    cout<<"4.归并排序"<<endl;
-    cout<<"5.希尔排序"<<endl;
-    cout<<"6.选择排序"<<endl;
-    cout<<"7.堆排序"<<endl;
-    cout<<endl;
-    cout<<"0.退出"<<endl;
+    cout<<"________________________"<<endl;
+    cout<<"|可视化排序选择菜单     |"<<endl;
+    cout<<"|1.插入排序             |"<<endl;
+    cout<<"|2.快速排序             |"<<endl;
+    cout<<"|3.冒泡排序             |"<<endl;
+    cout<<"|4.归并排序             |"<<endl;
+    cout<<"|5.希尔排序             |"<<endl;
+    cout<<"|6.选择排序             |"<<endl;
+    cout<<"|7.堆排序               |"<<endl;
+    cout<<"|                       |"<<endl;
+    cout<<"|0.退出                 |"<<endl;
+    cout<<"-------------------------"<<endl<<endl;
     cout<<"请输入你的选择:";
 }
 
 void compare_menu(int current){
     system("cls"); 
-    cout<<"双排序比较选择菜单"<<endl;
-    cout<<"当前选择数组大小:";
-    cout<<get_length()<<endl;
+    cout<<"________________________"<<endl;
+    cout<<"|双排序比较选择菜单     |"<<endl;
+    cout<<"|当前选择数组大小:";
+    cout<<get_length()<<"\t|"<<endl;
+    cout<<"|1.插入排序             |"<<endl;
+    cout<<"|2.快速排序             |"<<endl;
+    cout<<"|3.冒泡排序             |"<<endl;
+    cout<<"|4.归并排序             |"<<endl;
+    cout<<"|5.希尔排序             |"<<endl;
+    cout<<"|6.选择排序             |"<<endl;
+    cout<<"|7.堆排序               |"<<endl;
+    cout<<"|                       |"<<endl;
+    cout<<"|0.退出                 |"<<endl;
+    cout<<"------------------------"<<endl<<endl;
     cout<<"请选择第";
     cout<<current;
-    cout<<"个排序"<<endl;
-    cout<<"1.插入排序"<<endl;
-    cout<<"2.快速排序"<<endl;
-    cout<<"3.冒泡排序"<<endl;
-    cout<<"4.归并排序"<<endl;
-    cout<<"5.希尔排序"<<endl;
-    cout<<"6.选择排序"<<endl;
-    cout<<"7.堆排序"<<endl;
-    cout<<endl;
-    cout<<"0.退出"<<endl;
-    cout<<"请输入你的选择:";
+    cout<<"个排序:";
 }
 
 void array_size_menu(){     //数组大小选择菜单
     system("cls");
-    cout<<"选择数组大小"<<endl;
-    cout<<"1.30"<<endl;
-    cout<<"2.100"<<endl;
-    cout<<"3.1000"<<endl;
-    cout<<"4.5000"<<endl;
-    cout<<"5.10000"<<endl;
-    cout<<"0.退出"<<endl;
+    cout<<"_________________"<<endl;
+    cout<<"|请选择数组大小 |"<<endl;
+    cout<<"|1.30           |"<<endl;
+    cout<<"|2.100          |"<<endl;
+    cout<<"|3.1000         |"<<endl;
+    cout<<"|4.5000         |"<<endl;
+    cout<<"|5.10000        |"<<endl;
+    cout<<"|               |"<<endl;
+    cout<<"|0.退出         |"<<endl;
+    cout<<"-----------------"<<endl<<endl;
     cout<<"请输入你的选择:";
 }
 
@@ -502,6 +505,20 @@ void setting_menu(){    //设置菜单
     cout<<"1.图形化排序颜色开/关(禁用它以优化绘制性能)"<<endl;
     cout<<"0.退出"<<endl;
     cout<<"请输入你的选择:";
+}
+
+void about(){
+    system("cls"); 
+    cout<<"--------关于本程序--------"<<endl;
+    cout<<"本程序代码遵循GPL3.0协议"<<endl;
+    cout<<"数据结构作业-可视化排序"<<endl;
+    cout<<"构建者:kulib-程序架构设计,主要构建者"<<endl;
+    cout<<"       xvan1234-插入排序和希尔排序"<<endl;
+    cout<<"       Reyes-选择排序"<<endl<<endl;
+    cout<<"copyright@HZU计算机学院  2023/12/14"<<endl;
+    cout<<"感谢所有支持我的人!"<<endl<<endl;
+    cout<<"请按任意键继续...";
+    getchar();getchar();
 }
 
 void setting_function(){    //设置选项选择功能
@@ -587,7 +604,7 @@ void visible_menu_function(){   //可视化菜单选项选择功能
     }
 }
 
-void compare_funcion(int sort,int *using_arr){
+void compare_funcion(int sort,int *using_arr){  //调用比较功能函数
         if(sort==1){
             insertion_sort(using_arr,get_length());
             cout<<"随机数组已经排序完成，请按任意键继续......";
@@ -619,7 +636,9 @@ void compare_funcion(int sort,int *using_arr){
             getchar();
         }
         else if(sort==7){
-            
+            heapsort(using_arr,get_length());
+            cout<<"随机数组已经排序完成，请按任意键继续......";
+            getchar();
         }
 }
 
@@ -684,13 +703,28 @@ void compare_menu_function(){
     }
     if(current_select==3){
         display_switch=false;
-        arr_init(get_array(),get_length());
+        cin.clear();        //清空cin缓冲区
+        for(int i=0;i<get_length();i++){       //待排序数组赋值随机数
+            get_array()[i]=rand()%31+1;
+        }
+        compare_count=0;
+        exchange_count=0;
+
         int *used_arr=get_array();
 
-        int *copy_arr=new int[get_length()];
+        int len=get_length();
+        int *copy_arr=new int[len*2];
         for(int i=0;i<get_length();i++){
             copy_arr[i]=used_arr[i];
         }
+
+        system("cls");
+        display(get_array(),get_length(),0);
+        cout<<"排序1:";
+        get_sort_name(sort_1);
+        cout<<endl<<"随机数组已经生成完成，请按任意键继续......";
+        getchar();getchar();
+        system("cls");
 
         compare_funcion(sort_1,used_arr);
         compare_count_temp=compare_count;
@@ -703,24 +737,30 @@ void compare_menu_function(){
         exchange_count=0;
 
         display(get_array(),get_length(),0);
-        cout<<"随机数组已经生成完成，请按任意键继续......";
+        cout<<"排序2:";
+        get_sort_name(sort_2);
+        cout<<endl<<"随机数组已经生成完成，请按任意键继续......";
         getchar();
         system("cls");
 
         compare_funcion(sort_2,copy_arr);
         system("cls");
-        cout<<endl<<"数组大小:"<<get_length()<<endl;
-        cout<<"排序1:";
+        cout<<"_________________"<<endl;
+        cout<<endl<<"|数组大小:"<<get_length()<<"\t|"<<endl;
+        cout<<"-----------------"<<endl;
+        cout<<"|排序1:";
         get_sort_name(sort_1);
-        cout<<endl;
-        cout<<"比较总数:"<<compare_count_temp<<endl;
-        cout<<"交换总数:"<<exchange_count_temp<<endl<<endl;
-        cout<<"排序2:";
+        cout<<"\t|"<<endl;
+        cout<<"|比较总数:"<<compare_count_temp<<"\t|"<<endl;
+        cout<<"|交换总数:"<<exchange_count_temp<<"\t|"<<endl;
+        cout<<"-----------------"<<endl;
+        cout<<"|排序2:";
         get_sort_name(sort_2);
-        cout<<endl;
-        cout<<"比较总数:"<<compare_count<<endl;
-        cout<<"交换总数:"<<exchange_count<<endl;
-        cout<<endl<<"请按任意键继续";
+        cout<<"\t|"<<endl;
+        cout<<"|比较总数:"<<compare_count<<"\t|"<<endl;
+        cout<<"|交换总数:"<<exchange_count<<"\t|"<<endl;
+        cout<<"-----------------"<<endl;
+        cout<<endl<<"请按任意键继续...";
         getchar();
         display_switch=true;
         delete []copy_arr;
@@ -742,7 +782,7 @@ int main(int argc, char* argv[])
         if(choose==2){
             compare_menu_function();
         }
-        if(choose==8){
+        if(choose==4){
             while(size_choose!=0){
                 array_size_menu();
                 cin>>size_choose;
@@ -757,8 +797,11 @@ int main(int argc, char* argv[])
                 }
             }
         }
-        if(choose==9){
+        if(choose==5){
             setting_function();
+        }
+        if(choose==6){
+           about();
         }
     }
     return 0;
