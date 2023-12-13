@@ -211,6 +211,35 @@ void arr_init(int arr[],int count){     //初始化数组
     system("cls");
 }
 
+void Select_sort(int arr[],int n){  //选择排序.
+	for(int i = 0;i<n-1;i++){
+		int left = i;
+		int right = n-1;	
+		int imin = i;
+		int imax = i;
+		for(int j = i+1;j<n;j++){
+			if(arr[j]<arr[imin]){
+				imin = j;
+			}
+			if(arr[j]>arr[imax]){
+				imax = j;
+			}
+            compare_count+=2;
+		}
+		if(imin!=i){
+            swap(arr[imin],arr[left]);
+            exchange_count++;
+        }
+		if(imax == left)imax = imin;
+		if(imax!=right){
+            swap(arr[imax],arr[right]);
+            exchange_count++;
+        }
+		left++;
+		right--;
+	}
+}
+
 void insertion_sort(int arr[],int len)  //插入排序
 {
     for(int i=1;i<len;++i)
