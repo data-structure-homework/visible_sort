@@ -224,10 +224,17 @@ void Select_sort(int arr[],int n){  //选择排序.
 			if(arr[j]>arr[imax]){
 				imax = j;
 			}
+            compare_count+=2;
 		}
-		if(imin!=i)swap(arr[imin],arr[left]);
+		if(imin!=i){
+            swap(arr[imin],arr[left]);
+            exchange_count++;
+        }
 		if(imax == left)imax = imin;
-		if(imax!=right)swap(arr[imax],arr[right]);
+		if(imax!=right){
+            swap(arr[imax],arr[right]);
+            exchange_count++;
+        }
 		left++;
 		right--;
 	}
