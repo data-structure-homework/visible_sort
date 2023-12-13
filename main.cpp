@@ -211,7 +211,7 @@ void arr_init(int arr[],int count){     //初始化数组
     system("cls");
 }
 
-void Select_sort(int arr[],int n){  //选择排序
+void Select_sort(int arr[],int n){  //选择排序.
 	for(int i = 0;i<n-1;i++){
 		int left = i;
 		int right = n-1;	
