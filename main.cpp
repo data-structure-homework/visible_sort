@@ -363,6 +363,46 @@ void Shell_sort(int arr[],int len){             //希尔排序
 
 }
 
+void heat_adjust(int arr[],int index,int len){  //生成大根堆
+    int left=index*2+1;
+    int right=index*2+2;
+    int max_index=index;
+
+    if(arr[left]>arr[max_index] && left<len){
+        max_index=left;
+    }
+    if(arr[right]>arr[max_index] && right<len){
+        max_index=right;
+    }
+    compare_count+=2;
+
+    if(max_index!=index){
+        swap(arr[index],arr[max_index]);
+        exchange_count++;
+        display(arr,len,7);
+        heat_adjust(arr,max_index,len);
+    }
+}
+
+void heapsort(int arr[],int len){   //堆排序主函数
+    for(int i=len/2-1;i>=0;i--){
+        heat_adjust(arr,i,len);
+    }
+    cout<<arr[0]<<endl;
+    getchar();
+
+    for(int i=len-1;i>=1;i--){
+        int temp=arr[0];
+        arr[0]=arr[i];
+        arr[i]=temp;
+        display(arr,len,7);
+        //getchar();
+        //swap(arr[i],arr[0]);
+        exchange_count++;
+        heat_adjust(arr,0,i);
+    }
+}
+
 void main_menu(){       //主菜单
     system("cls");
     cout<<"可视化排序算法v1.4.2"<<endl;
@@ -502,7 +542,10 @@ void visible_menu_function(){   //可视化菜单选项选择功能
             
         }
         if(choose==7){
-            
+            arr_init(get_array(),get_length());
+            heapsort(get_array(),get_length());
+            cout<<"随机数组已经排序完成，请按任意键继续......";
+            getchar();
         }
     }
 }
@@ -592,7 +635,7 @@ void compare_menu_function(){
         arr_init(get_array(),get_length());
         int *used_arr=get_array();
 
-        int *copy_arr=new int[10000];
+        int *copy_arr=new int[get_length()];
         for(int i=0;i<get_length();i++){
             copy_arr[i]=used_arr[i];
         }
@@ -625,6 +668,7 @@ void compare_menu_function(){
         cout<<endl;
         cout<<"比较总数:"<<compare_count<<endl;
         cout<<"交换总数:"<<exchange_count<<endl;
+        cout<<endl<<"请按任意键继续";
         getchar();
         display_switch=true;
         delete []copy_arr;
