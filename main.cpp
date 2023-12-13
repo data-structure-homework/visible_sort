@@ -395,7 +395,7 @@ void Select_sort(int arr[],int len){  //选择排序.
 
 void main_menu(){       //主菜单
     system("cls");
-    cout<<"可视化排序算法v1.4.2"<<endl;
+    cout<<"可视化排序算法v1.4.3"<<endl;
     cout<<"当前选择数组大小:";
     cout<<get_length()<<endl;
     cout<<"1.单排序可视化演示(将自动切换数组大小至100)"<<endl;
