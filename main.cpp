@@ -1,5 +1,5 @@
 //GPL 3.0 LINCENCE
-//排序函数规范:     sort_example(int arr[],int count  (可选int start,int end)  )
+//排序函数规范:     sort_example(int arr[],int len (可选int start,int end)  )
 //请使用最新版本的mingw64-g++编译;      编译命令:g++ -Wall -o output ./main.cpp
 //请双击打开程序，否则会出现初始化错误的问题
 
@@ -188,7 +188,7 @@ void init(){    //程序初始化
     HWND hWnd;
     GetConsoleTitle(title, 246);
     hWnd = FindWindow(0, title);
-    MoveWindow(hWnd,200,200,1280,720,true);//调整CMD窗口大小
+    MoveWindow(hWnd,20,20,1280,800,true);//调整CMD窗口大小
 
     system("color f0");
 
@@ -209,35 +209,6 @@ void arr_init(int arr[],int count){     //初始化数组
     cout<<"随机数组已经生成完成，请按任意键继续......";
     getchar(); getchar();
     system("cls");
-}
-
-void Select_sort(int arr[],int n){  //选择排序.
-	for(int i = 0;i<n-1;i++){
-		int left = i;
-		int right = n-1;	
-		int imin = i;
-		int imax = i;
-		for(int j = i+1;j<n;j++){
-			if(arr[j]<arr[imin]){
-				imin = j;
-			}
-			if(arr[j]>arr[imax]){
-				imax = j;
-			}
-            compare_count+=2;
-		}
-		if(imin!=i){
-            swap(arr[imin],arr[left]);
-            exchange_count++;
-        }
-		if(imax == left)imax = imin;
-		if(imax!=right){
-            swap(arr[imax],arr[right]);
-            exchange_count++;
-        }
-		left++;
-		right--;
-	}
 }
 
 void insertion_sort(int arr[],int len)  //插入排序
@@ -377,7 +348,7 @@ void Shell_sort(int arr[],int len){             //希尔排序
                 {
                     arr[end+gap]=arr[end];
                     end-=gap;
-                    display(arr,len,4);
+                    display(arr,len,5);
                 }
                 else 
                 {
@@ -387,9 +358,39 @@ void Shell_sort(int arr[],int len){             //希尔排序
             exchange_count++;
             arr[end+gap]=tem;
         }
-        display(arr,len,4);
+        display(arr,len,5);
     }
+}
 
+void Select_sort(int arr[],int len){  //选择排序.
+	for(int i = 0;i<len-1;i++){
+		int left = i;
+		int right = len-1;	
+		int imin = i;
+		int imax = i;
+		for(int j = i+1;j<len;j++){
+			if(arr[j]<arr[imin]){
+				imin = j;
+			}
+			if(arr[j]>arr[imax]){
+				imax = j;
+			}
+            compare_count+=2;
+		}
+		if(imin!=i){
+            swap(arr[imin],arr[left]);
+            exchange_count++;
+            display(arr,len,6);
+        }
+		if(imax == left)imax = imin;
+		if(imax!=right){
+            swap(arr[imax],arr[right]);
+            exchange_count++;
+            display(arr,len,6);
+        }
+		left++;
+		right--;
+	}
 }
 
 void main_menu(){       //主菜单
@@ -416,6 +417,8 @@ void visible_menu(){        //可视化选择菜单
     cout<<"3.冒泡排序"<<endl;
     cout<<"4.归并排序"<<endl;
     cout<<"5.希尔排序"<<endl;
+    cout<<"6.选择排序"<<endl;
+    cout<<"7.堆排序"<<endl;
     cout<<endl;
     cout<<"0.退出"<<endl;
     cout<<"请输入你的选择:";
@@ -434,6 +437,8 @@ void compare_menu(int current){
     cout<<"3.冒泡排序"<<endl;
     cout<<"4.归并排序"<<endl;
     cout<<"5.希尔排序"<<endl;
+    cout<<"6.选择排序"<<endl;
+    cout<<"7.堆排序"<<endl;
     cout<<endl;
     cout<<"0.退出"<<endl;
     cout<<"请输入你的选择:";
@@ -463,31 +468,31 @@ void setting_function(){    //设置选项选择功能
     int setting_choose=1;
     char confirm='o';
     while(setting_choose!=0){
-                setting_menu();
-                cin>>setting_choose;
-                if(setting_choose==1){
-                    while(1){
-                        system("cls");
-                        cout<<"图形化排序颜色开/关(禁用它以优化绘制性能)"<<endl;
-                        cout<<"当前:";
-                        if(display_color_switch==true)
-                            cout<<"开"<<endl;
-                        else
-                            cout<<"关"<<endl;
+        setting_menu();
+        cin>>setting_choose;
+        if(setting_choose==1){
+            while(1){
+                system("cls");
+                cout<<"图形化排序颜色开/关(禁用它以优化绘制性能)"<<endl;
+                cout<<"当前:";
+                if(display_color_switch==true)
+                    cout<<"开"<<endl;
+                else
+                    cout<<"关"<<endl;
                         
-                        cout<<"请选择:Y/N:";
-                        cin>>confirm;
-                        if(confirm=='Y' || confirm=='y'){
-                            display_color_switch=true;
-                            break;
-                        }
-                        if(confirm=='N' || confirm=='n'){
-                            display_color_switch=false;
-                            break;
-                        }
-                    }
+                cout<<"请选择:Y/N:";
+                cin>>confirm;
+                if(confirm=='Y' || confirm=='y'){
+                    display_color_switch=true;
+                    break;
+                }
+                if(confirm=='N' || confirm=='n'){
+                    display_color_switch=false;
+                    break;
                 }
             }
+        }
+    }
 }
 
 void visible_menu_function(){   //可视化菜单选项选择功能
@@ -528,7 +533,10 @@ void visible_menu_function(){   //可视化菜单选项选择功能
             getchar();
         }
         if(choose==6){
-            
+            arr_init(get_array(),get_length());
+            Select_sort(get_array(),get_length());
+            cout<<"随机数组已经排序完成，请按任意键继续......";
+            getchar();
         }
         if(choose==7){
             
@@ -563,7 +571,9 @@ void compare_funcion(int sort,int *using_arr){
             getchar();
         }
         else if(sort==6){
-           
+            Select_sort(using_arr,get_length());
+            cout<<"随机数组已经排序完成，请按任意键继续......";
+            getchar();
         }
         else if(sort==7){
             
@@ -595,6 +605,12 @@ void compare_menu_function(){
             if(choose==5){
                 sort_1=5;
             }
+            if(choose==6){
+                sort_1=6;
+            }
+            if(choose==7){
+                sort_1=7;
+            }
             current_select++;
         }
         else if(current_select==2 && choose>=1 && choose<=7){
@@ -613,11 +629,18 @@ void compare_menu_function(){
             if(choose==5){
                 sort_2=5;
             }
+            if(choose==6){
+                sort_2=6;
+            }
+            if(choose==7){
+                sort_2=7;
+            }
             current_select++;
             break;
         }
     }
     if(current_select==3){
+        display_switch=false;
         arr_init(get_array(),get_length());
         int *used_arr=get_array();
 
@@ -654,6 +677,7 @@ void compare_menu_function(){
         cout<<endl;
         cout<<"比较总数:"<<compare_count<<endl;
         cout<<"交换总数:"<<exchange_count<<endl;
+        cout<<endl<<"请按任意键继续";
         getchar();
         display_switch=true;
         delete []copy_arr;
