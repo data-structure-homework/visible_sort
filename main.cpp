@@ -4,11 +4,15 @@
 //请双击打开程序，否则会出现初始化错误的问题
 
 #include <iostream>
-#include <cstdio>
+#include <stdio.h>
 #include <time.h>       //时间
 #include <thread>       //线程暂停
 #include <chrono>
 #include <windows.h>    //cmd命令库
+#include <fstream>      //文件读写
+#include <string.h>
+#include <ios>
+#include <string>
 #define setcolor(a) SetConsoleTextAttribute( GetStdHandle(STD_OUTPUT_HANDLE),a);    //定义控制台调色函数 用法:a=两位十六进制数(0xAB)    A=背景色    B=字体色
 #define sleep_mircosecends(a) this_thread::sleep_for(chrono::milliseconds(a));      //定义线程暂停函数   用法:sleep_mircosecends(a)     a=毫秒
 using namespace std;
@@ -52,13 +56,13 @@ int * get_array(){  //返回当前选择的数组指针
     else if(array_size==2){
         return arr100;
     }
-    else if(array_size==2){
+    else if(array_size==3){
         return arr1000;
     }
-    else if(array_size==2){
+    else if(array_size==4){
         return arr5000;
     }
-    else if(array_size==2){
+    else if(array_size==5){
         return arr10000;
     }
     else
@@ -174,6 +178,88 @@ void display(int arr[],int number_count,int sort){   //可视化显示函数
     cout<<"当前交换总数:"<<exchange_count<<endl;
 }
 
+void write_setting(){       //写入配置文件
+    ifstream setfiles;
+
+	setfiles.open("setfiles.txt",ios::in);
+	if (!setfiles.is_open())
+	{
+		cout <<"配置文件打开失败,将创建新默认配置文件"<<endl;
+        cout<<"请按任意键继续...";
+        getchar();
+        ofstream file("setfiles.txt");
+
+        ofstream write_setfiles;
+        write_setfiles.open("setfiles.txt", ios::out);
+        write_setfiles<<"setting.profile"<<endl;
+        write_setfiles<<"display_color_switch=1"<<endl;
+        write_setfiles<<"array_size=2"<<endl;
+	}
+
+    std::ofstream write_setfiles("setfiles.txt",ios::ate);
+    write_setfiles<<"setting.profile\n"<<endl;
+    write_setfiles<<"display_color_switch=";
+    if(display_color_switch){
+        write_setfiles<<"1"<<endl;
+    }
+    else{
+        write_setfiles<<"0"<<endl;
+    }
+    write_setfiles<<"array_size=";
+    write_setfiles<<array_size;
+
+    getchar();
+}
+
+void read_setting(){
+    ifstream setfiles;
+
+	setfiles.open("setfiles.txt",ios::in);
+	if (!setfiles.is_open())
+	{
+		cout <<"配置文件打开失败,将创建新默认配置文件"<<endl;
+        cout<<"请按任意键继续...";
+        getchar();
+        ofstream file("setfiles.txt");
+
+        ofstream write_setfiles;
+        write_setfiles.open("setfiles.txt", ios::out);
+        write_setfiles<<"setting.profile\n"<<endl;
+        write_setfiles<<"display_color_switch=1\n"<<endl;
+        write_setfiles<<"array_size=2\n"<<endl;
+	}
+
+    string buffer;
+	while (getline(setfiles, buffer)) {
+		cout<<buffer<<endl; 
+        string dis_color="display_color_switch=";
+        string arr_size="array_size=";
+
+        size_t result=buffer.find(dis_color);
+        if (result!=std::string::npos) {
+            cout<<"颜色开关已设置为 ";
+            if(buffer[21]=='0'){
+                display_color_switch=false;
+                cout<<"关闭!"<<endl;
+            }
+            else if(buffer[21]=='1'){
+                display_color_switch=true;
+                cout<<"开启!"<<endl;
+            }
+        } 
+
+        result=buffer.find(arr_size);
+        if (result!=std::string::npos) {
+            array_size=int(buffer[11])-48;
+            cout<<"数组大小已设置为 ";
+            cout<<get_length()<<endl;
+        } 
+	}
+    cout<<"读取完成!"<<endl;
+
+    setfiles.close();
+}
+
 void init(){    //程序初始化
     SetConsoleOutputCP(65001);//设置CMD为UTF8
 
@@ -194,12 +280,14 @@ void init(){    //程序初始化
 
     compare_count=0;
     exchange_count=0;
+
+    read_setting();
 }
 
 void arr_init(int arr[],int count){     //初始化数组
-    system("cls");      //清屏
-    cin.clear();        //清空cin缓冲区
-    for(int i=0;i<count;i++){       //待排序数组赋值随机数
+    system("cls");                      //清屏
+    cin.clear();                        //清空cin缓冲区
+    for(int i=0;i<count;i++){           //待排序数组赋值随机数
         arr[i]=rand()%31+1;
     }
     compare_count=0;
@@ -430,7 +518,7 @@ void heapsort(int arr[],int len){   //堆排序主函数
 void main_menu(){       //主菜单
     system("cls");
     cout<<"________________________________________________"<<endl;
-    cout<<"|可视化排序算法v1.5                             |"<<endl;
+    cout<<"|可视化排序算法v1.5.1                           |"<<endl;
     cout<<"|当前数组大小:";
     cout<<get_length()<<"\t\t\t\t|"<<endl;
     cout<<"|                                               |"<<endl;
@@ -439,7 +527,8 @@ void main_menu(){       //主菜单
     cout<<"|                                               |"<<endl;
     cout<<"|4.切换排序数组大小                             |"<<endl;
     cout<<"|5.设置(beta)                                   |"<<endl;
-    cout<<"|6.关于本程序                                   |"<<endl;
+    cout<<"|6.从本地读取配置文件                           |"<<endl;
+    cout<<"|7.关于本程序                                   |"<<endl;
     cout<<"|                                               |"<<endl;
     cout<<"|0.退出                                         |"<<endl;
     cout<<"-------------------------------------------------"<<endl<<endl;
@@ -541,10 +630,12 @@ void setting_function(){    //设置选项选择功能
                 cin>>confirm;
                 if(confirm=='Y' || confirm=='y'){
                     display_color_switch=true;
+                    write_setting();
                     break;
                 }
                 if(confirm=='N' || confirm=='n'){
                     display_color_switch=false;
+                    write_setting();
                     break;
                 }
             }
@@ -788,11 +879,7 @@ int main(int argc, char* argv[])
                 cin>>size_choose;
                 if(size_choose>=1 && size_choose<=5){
                     array_size=size_choose;
-                    if(array_size!=2)
-                        display_switch=false;
-                    else
-                        display_switch=true;
-
+                    write_setting();
                     break;
                 }
             }
@@ -801,6 +888,12 @@ int main(int argc, char* argv[])
             setting_function();
         }
         if(choose==6){
+            system("cls");
+            read_setting();
+            cout<<endl<<"请按任意键继续....";
+            getchar();getchar();
+        }
+        if(choose==7){
            about();
         }
     }
