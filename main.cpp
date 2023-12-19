@@ -13,8 +13,11 @@
 #include <string.h>
 #include <ios>
 #include <string>
-#define setcolor(a) SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),a);    //定义控制台调色函数 用法:a=两位十六进制数(0xAB)    A=背景色    B=字体色
-#define sleep_mircosecends(a) this_thread::sleep_for(chrono::milliseconds(a));      //定义线程暂停函数   用法:sleep_mircosecends(a)     a=毫秒
+#include <sstream>
+#define setcolor(a) SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),a);    
+    //定义控制台调色函数 用法:a=两位十六进制数(0xAB)    A=背景色    B=字体色
+#define sleep_mircosecends(a) this_thread::sleep_for(chrono::milliseconds(a));      
+    //定义线程暂停函数   用法:sleep_mircosecends(a)     a=毫秒
 using namespace std;
 int arr30[30];          //以下为不同大小的待排序数组
 int arr100[100];
@@ -26,8 +29,10 @@ int bg_olor_arr[9]={0x1,0x0,0x80,0x90,0xA0,0xC0,0xD0,0xE0,0xF0};
     //颜色从下标一开始有效，顺序是黑色，灰色，淡蓝色，淡绿色，淡红色，淡紫色，淡黄色，白色
 int compare_count;      //比较计数器
 int exchange_count;     //交换计数器
-int array_size=2;       //数组大小  1.30   2.100   3.1000   4.5000   5.10000
-int sort_1=0;           //多排序比较-排序类型1      排序类型  0=undefined 1=插入排序 2=快速排序 3=冒泡排序 4=归并排序         未实现:5=希尔排序 6=选择排序 7=堆排序
+int array_size=2;       
+    //数组大小  1.30   2.100   3.1000   4.5000   5.10000
+int sort_1=0;           
+    //多排序比较-排序类型1      排序类型  0=undefined 1=插入排序 2=快速排序 3=冒泡排序 4=归并排序         未实现:5=希尔排序 6=选择排序 7=堆排序
 int sort_2=0;           //多排序比较-排序类型2
 bool display_switch=true;  //设置是否显示可视化
 bool display_color_switch=false; //设置是否显示颜色
@@ -191,6 +196,41 @@ void display(int arr[],int number_count,int sort){   //可视化显示函数
     cout<<"当前交换总数:"<<exchange_count<<endl;
 }
 
+string oct_to_hex(int oct){    //十进制转换为 单位数 字符串 十六进制
+    if(oct<=9){
+        ostringstream ss;
+        ss<<oct;
+        string r=ss.str();
+        return r;
+    }
+    else if(oct==10)
+        return "A";
+    else if(oct==11)
+        return "B";
+    else if(oct==12)
+        return "C";
+    else if(oct==13)
+        return "D";
+    else if(oct==14)
+        return "E";
+    else if(oct==15)
+        return "F";
+    else
+        return "ERROR";
+}
+
+void create_setting(){
+    ofstream file("setfiles.txt");
+
+    ofstream write_setfiles;
+    write_setfiles.open("setfiles.txt", ios::out);
+    write_setfiles<<"setting.profile"<<endl;
+    write_setfiles<<"display_color_switch=0"<<endl;
+    write_setfiles<<"array_size=2"<<endl;
+    write_setfiles<<"background_color=F"<<endl;
+    write_setfiles<<"font_color=0"<<endl;
+}
+
 void write_setting(){       //写入配置文件
     ifstream setfiles;
 
@@ -200,15 +240,7 @@ void write_setting(){       //写入配置文件
 		cout <<"配置文件打开失败,将创建新默认配置文件"<<endl;
         cout<<"请按任意键继续...";
         getchar();
-        ofstream file("setfiles.txt");
-
-        ofstream write_setfiles;
-        write_setfiles.open("setfiles.txt", ios::out);
-        write_setfiles<<"setting.profile"<<endl;
-        write_setfiles<<"display_color_switch=0"<<endl;
-        write_setfiles<<"array_size=2"<<endl;
-        write_setfiles<<"background_color=F"<<endl;
-        write_setfiles<<"font_color=0"<<endl;
+        create_setting();
 	}
 
     std::ofstream write_setfiles("setfiles.txt",ios::ate);
@@ -227,36 +259,10 @@ void write_setting(){       //写入配置文件
     write_setfiles<<"background_color=";
     int bg_color_temp=0;
     bg_color_temp=background_color/16;
-    if(bg_color_temp<=9)
-        write_setfiles<<background_color<<endl;
-    else if(bg_color_temp==10)
-        write_setfiles<<"A"<<endl;
-    else if(bg_color_temp==11)
-        write_setfiles<<"B"<<endl;
-    else if(bg_color_temp==12)
-        write_setfiles<<"C"<<endl;
-    else if(bg_color_temp==13)
-        write_setfiles<<"D"<<endl;
-    else if(bg_color_temp==14)
-        write_setfiles<<"E"<<endl;
-    else if(bg_color_temp==15)
-        write_setfiles<<"F"<<endl;
+    write_setfiles<<oct_to_hex(background_color/16)<<endl;
 
     write_setfiles<<"font_color=";
-    if(font_color<=9)
-        write_setfiles<<font_color<<endl;
-    else if(font_color==10)
-        write_setfiles<<"A"<<endl;
-    else if(font_color==11)
-        write_setfiles<<"B"<<endl;
-    else if(font_color==12)
-        write_setfiles<<"C"<<endl;
-    else if(font_color==13)
-        write_setfiles<<"D"<<endl;
-    else if(font_color==14)
-        write_setfiles<<"E"<<endl;
-    else if(font_color==15)
-        write_setfiles<<"F"<<endl;
+    write_setfiles<<oct_to_hex(font_color)<<endl;
 
     getchar();
 }
@@ -270,15 +276,6 @@ void read_setting(){
 		cout <<"配置文件打开失败,将创建新默认配置文件"<<endl;
         cout<<"请按任意键继续...";
         getchar();
-        ofstream file("setfiles.txt");
-
-        ofstream write_setfiles;
-        write_setfiles.open("setfiles.txt", ios::out);
-        write_setfiles<<"setting.profile"<<endl;
-        write_setfiles<<"display_color_switch=0"<<endl;
-        write_setfiles<<"array_size=2"<<endl;
-        write_setfiles<<"background_color=F"<<endl;
-        write_setfiles<<"font_color=0"<<endl;
 	}
 
     string buffer;
@@ -628,7 +625,7 @@ void heapsort(int arr[],int len){   //堆排序主函数
 void main_menu(){       //主菜单
     system("cls");
     cout<<"________________________________________________"<<endl;
-    cout<<"|可视化排序算法v1.6.1                           |"<<endl;
+    cout<<"|可视化排序算法v1.6.2                           |"<<endl;
     cout<<"|当前数组大小:";
     cout<<get_length()<<"\t\t\t\t|"<<endl;
     cout<<"|                                               |"<<endl;
@@ -704,6 +701,7 @@ void setting_menu(){    //设置菜单
     cout<<"|设置                                        |"<<endl;
     cout<<"|1.图形化排序颜色开/关(禁用它以优化绘制性能) |"<<endl;
     cout<<"|2.主题设置(beta)                            |"<<endl;
+    cout<<"|3.恢复默认设置                              |"<<endl;
     cout<<"|                                            |"<<endl;
     cout<<"|0.退出                                      |"<<endl;
     cout<<"----------------------------------------------"<<endl<<endl;
@@ -816,6 +814,24 @@ void setting_function(){    //设置选项选择功能
 
                     setcolor(background_color+font_color);
                 }
+            }
+        }
+        if(setting_choose==3){
+            while(1){
+                system("cls");
+                cout<<"是否真的要恢复默认设置?"<<endl;
+                cout<<"请选择:Y/N:";
+                cin>>confirm;
+                if(confirm=='Y' || confirm=='y'){
+                    create_setting();
+                    read_setting();
+                    system("cls");
+                    cout<<"重置成功!";
+                    sleep_mircosecends(1000);
+                    break;
+                }
+                if(confirm=='N' || confirm=='n')
+                    break;
             }
         }
         write_setting();
