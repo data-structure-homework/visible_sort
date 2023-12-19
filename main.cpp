@@ -13,7 +13,7 @@
 #include <string.h>
 #include <ios>
 #include <string>
-#define setcolor(a) SetConsoleTextAttribute( GetStdHandle(STD_OUTPUT_HANDLE),a);    //定义控制台调色函数 用法:a=两位十六进制数(0xAB)    A=背景色    B=字体色
+#define setcolor(a) SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),a);    //定义控制台调色函数 用法:a=两位十六进制数(0xAB)    A=背景色    B=字体色
 #define sleep_mircosecends(a) this_thread::sleep_for(chrono::milliseconds(a));      //定义线程暂停函数   用法:sleep_mircosecends(a)     a=毫秒
 using namespace std;
 int arr30[30];          //以下为不同大小的待排序数组
@@ -27,7 +27,10 @@ int array_size=2;       //数组大小  1.30   2.100   3.1000   4.5000   5.10000
 int sort_1=0;           //多排序比较-排序类型1      排序类型  0=undefined 1=插入排序 2=快速排序 3=冒泡排序 4=归并排序         未实现:5=希尔排序 6=选择排序 7=堆排序
 int sort_2=0;           //多排序比较-排序类型2
 bool display_switch=true;  //设置是否显示可视化
-bool display_color_switch=true; //设置是否显示颜色
+bool display_color_switch=false; //设置是否显示颜色
+
+int background_color=0xf0;
+int font_color=0x0;
 
 int get_length(){      //返回当前选择的数组长度
     if(array_size==1){
@@ -101,7 +104,7 @@ void gotoxy(short x, short y) {     //光标复位
 
 void display(int arr[],int number_count,int sort){   //可视化显示函数
     gotoxy(0,0);        //光标复位
-
+    setcolor(background_color+font_color);
     if(display_switch){
         if(display_color_switch){
             for(int i=30;i>0;i--){      //颜色显示
@@ -111,43 +114,43 @@ void display(int arr[],int number_count,int sort){   //可视化显示函数
                         printf(" ");
                     else{
                         if(arr[j]<=3){
-                            setcolor(0xfd);
+                            setcolor(background_color+0xd);
                             printf("■");
                         }
                         else if(arr[j]<=6){
-                            setcolor(0xf1);
+                            setcolor(background_color+0x1);
                             printf("■");
                         }
                         else if(arr[j]<=9){
-                            setcolor(0xf9);
+                            setcolor(background_color+0x9);
                             printf("■");
                         }
                         else if(arr[j]<=12){
-                            setcolor(0xf3);
+                            setcolor(background_color+0x3);
                             printf("■");
                         }
                         else if(arr[j]<=15){
-                            setcolor(0xfb);
+                            setcolor(background_color+0xb);
                             printf("■");
                         }
                         else if(arr[j]<=18){
-                            setcolor(0xf2);
+                            setcolor(background_color+0x2);
                             printf("■");
                         }
                         else if(arr[j]<=21){
-                            setcolor(0xfa);
+                            setcolor(background_color+0xa);
                             printf("■");
                         }
                         else if(arr[j]<=24){
-                            setcolor(0xf6);
+                            setcolor(background_color+0x6);
                             printf("■");
                         }
                         else if(arr[j]<=27){
-                            setcolor(0xf4);
+                            setcolor(background_color+0x4);
                             printf("■");
                         }
                         else if(arr[j]<=30){
-                            setcolor(0xfc);
+                            setcolor(background_color+0xc);
                             printf("■");
                         }
                     }
@@ -168,7 +171,7 @@ void display(int arr[],int number_count,int sort){   //可视化显示函数
             }
         }
     }
-    setcolor(0xf0);
+    setcolor(background_color+font_color);
     if(sort!=0){
         cout<<"当前排序:";
         get_sort_name(sort);
@@ -192,12 +195,14 @@ void write_setting(){       //写入配置文件
         ofstream write_setfiles;
         write_setfiles.open("setfiles.txt", ios::out);
         write_setfiles<<"setting.profile"<<endl;
-        write_setfiles<<"display_color_switch=1"<<endl;
+        write_setfiles<<"display_color_switch=0"<<endl;
         write_setfiles<<"array_size=2"<<endl;
+        write_setfiles<<"background_color=F"<<endl;
+        write_setfiles<<"font_color=0"<<endl;
 	}
 
     std::ofstream write_setfiles("setfiles.txt",ios::ate);
-    write_setfiles<<"setting.profile\n"<<endl;
+    write_setfiles<<"setting.profile"<<endl;
     write_setfiles<<"display_color_switch=";
     if(display_color_switch){
         write_setfiles<<"1"<<endl;
@@ -205,8 +210,43 @@ void write_setting(){       //写入配置文件
     else{
         write_setfiles<<"0"<<endl;
     }
+
     write_setfiles<<"array_size=";
-    write_setfiles<<array_size;
+    write_setfiles<<array_size<<endl;
+
+    write_setfiles<<"background_color=";
+    int bg_color_temp=0;
+    bg_color_temp=background_color/16;
+    if(bg_color_temp<=9)
+        write_setfiles<<background_color<<endl;
+    else if(bg_color_temp==10)
+        write_setfiles<<"A"<<endl;
+    else if(bg_color_temp==11)
+        write_setfiles<<"B"<<endl;
+    else if(bg_color_temp==12)
+        write_setfiles<<"C"<<endl;
+    else if(bg_color_temp==13)
+        write_setfiles<<"D"<<endl;
+    else if(bg_color_temp==14)
+        write_setfiles<<"E"<<endl;
+    else if(bg_color_temp==15)
+        write_setfiles<<"F"<<endl;
+
+    write_setfiles<<"font_color=";
+    if(font_color<=9)
+        write_setfiles<<font_color<<endl;
+    else if(font_color==10)
+        write_setfiles<<"A"<<endl;
+    else if(font_color==11)
+        write_setfiles<<"B"<<endl;
+    else if(font_color==12)
+        write_setfiles<<"C"<<endl;
+    else if(font_color==13)
+        write_setfiles<<"D"<<endl;
+    else if(font_color==14)
+        write_setfiles<<"E"<<endl;
+    else if(font_color==15)
+        write_setfiles<<"F"<<endl;
 
     getchar();
 }
@@ -224,9 +264,11 @@ void read_setting(){
 
         ofstream write_setfiles;
         write_setfiles.open("setfiles.txt", ios::out);
-        write_setfiles<<"setting.profile\n"<<endl;
-        write_setfiles<<"display_color_switch=1\n"<<endl;
-        write_setfiles<<"array_size=2\n"<<endl;
+        write_setfiles<<"setting.profile"<<endl;
+        write_setfiles<<"display_color_switch=0"<<endl;
+        write_setfiles<<"array_size=2"<<endl;
+        write_setfiles<<"background_color=F"<<endl;
+        write_setfiles<<"font_color=0"<<endl;
 	}
 
     string buffer;
@@ -234,6 +276,8 @@ void read_setting(){
 		cout<<buffer<<endl; 
         string dis_color="display_color_switch=";
         string arr_size="array_size=";
+        string bg_color="background_color=";
+        string f_color="font_color=";
 
         size_t result=buffer.find(dis_color);
         if (result!=std::string::npos) {
@@ -254,7 +298,29 @@ void read_setting(){
             cout<<"数组大小已设置为 ";
             cout<<get_length()<<endl;
         } 
+
+        result=buffer.find(bg_color);
+        if (result!=std::string::npos) {
+            if(int(buffer[19])>=48 && int(buffer[17])<=57)
+                background_color=int(buffer[17])-48;
+            else
+                background_color=int(buffer[17])-55;
+
+            background_color*=16;
+            cout<<"bg_color="<<background_color<<endl;
+        } 
+
+        result=buffer.find(f_color);
+        if (result!=std::string::npos) {
+            if(int(buffer[19])>=48 && int(buffer[11])<=57)
+                font_color=int(buffer[11])-48;
+            else
+                font_color=int(buffer[11])-55;
+
+            cout<<"f_color="<<font_color<<endl;
+        } 
 	}
+    setcolor(background_color+font_color);
     cout<<"读取完成!"<<endl;
 
     setfiles.close();
@@ -276,7 +342,7 @@ void init(){    //程序初始化
     hWnd = FindWindow(0, title);
     MoveWindow(hWnd,20,20,1280,900,true);//调整CMD窗口大小
 
-    system("color f0");
+    setcolor(background_color+font_color);
 
     compare_count=0;
     exchange_count=0;
@@ -592,6 +658,7 @@ void setting_menu(){    //设置菜单
     system("cls");
     cout<<"设置(beta)"<<endl;
     cout<<"1.图形化排序颜色开/关(禁用它以优化绘制性能)"<<endl;
+    cout<<"2.主题设置"<<endl;
     cout<<"0.退出"<<endl;
     cout<<"请输入你的选择:";
 }
@@ -630,16 +697,110 @@ void setting_function(){    //设置选项选择功能
                 cin>>confirm;
                 if(confirm=='Y' || confirm=='y'){
                     display_color_switch=true;
-                    write_setting();
                     break;
                 }
                 if(confirm=='N' || confirm=='n'){
                     display_color_switch=false;
-                    write_setting();
                     break;
                 }
             }
         }
+        if(setting_choose==2){
+            int color_setting=1;
+            while(color_setting!=0){
+                setcolor(background_color+font_color);
+                system("cls");
+                cout<<"主题选择"<<endl;
+                cout<<"1.黑色主题"<<endl;
+                cout<<"2.白色主题"<<endl;
+                cout<<"3.自定义"<<endl;
+                cout<<"0.退出"<<endl;
+                cout<<"请输入你的选择:";
+                
+                cin>>color_setting;
+                if(color_setting==1){
+                    background_color=0x00;
+                    font_color=0xf;
+                }
+                if(color_setting==2){
+                    background_color=0xf0;
+                    font_color=0x0;
+                }
+                if(color_setting==3){
+                    int current_bg_color=100;
+                    int current_f_color=100;
+                    while(current_bg_color<0 || current_bg_color>8){
+                        system("cls");
+                        cout<<"请选择背景颜色"<<endl;
+                        cout<<"1.黑色"<<endl;
+                        cout<<"2.灰色"<<endl;
+                        cout<<"3.淡蓝色"<<endl;
+                        cout<<"4.淡绿色"<<endl;
+                        cout<<"5.淡红色"<<endl;
+                        cout<<"6.淡紫色"<<endl;
+                        cout<<"7.淡黄色"<<endl;
+                        cout<<"8.白色"<<endl;
+                        cout<<"请输入你的选择:";
+                        cin>>current_bg_color;
+                    }
+                    while(current_f_color<0 || current_f_color>8 || current_f_color==current_bg_color){
+                        if(current_f_color==current_bg_color){
+                            system("cls");
+                            cout<<"字体和背景颜色不能相同!"<<endl;
+                            sleep_mircosecends(1000);
+                        }
+                        system("cls");
+                        cout<<"请选择字体颜色"<<endl;
+                        cout<<"1.黑色"<<endl;
+                        cout<<"2.灰色"<<endl;
+                        cout<<"3.淡蓝色"<<endl;
+                        cout<<"4.淡绿色"<<endl;
+                        cout<<"5.淡红色"<<endl;
+                        cout<<"6.淡紫色"<<endl;
+                        cout<<"7.淡黄色"<<endl;
+                        cout<<"8.白色"<<endl;
+                        cout<<"请输入你的选择:";
+                        cin>>current_f_color;
+                    }
+                    if(current_bg_color==1)
+                        background_color=0x0;
+                    else if(current_bg_color==2)
+                        background_color=0x80;
+                    else if(current_bg_color==3)
+                        background_color=0x90;
+                    else if(current_bg_color==4)
+                        background_color=0xA0;
+                    else if(current_bg_color==5)
+                        background_color=0xC0;
+                    else if(current_bg_color==6)
+                        background_color=0xD0;
+                    else if(current_bg_color==7)
+                        background_color=0xE0;
+                    else if(current_bg_color==8)
+                        background_color=0xF0;
+
+                    if(current_f_color==1)
+                        font_color=0x0;
+                    else if(current_f_color==2)
+                        font_color=0x8;
+                    else if(current_f_color==3)
+                        font_color=0x9;
+                    else if(current_f_color==4)
+                        font_color=0xA;
+                    else if(current_f_color==5)
+                        font_color=0xC;
+                    else if(current_f_color==6)
+                        font_color=0xD;
+                    else if(current_f_color==7)
+                        font_color=0xE;
+                    else if(current_f_color==8)
+                        font_color=0xF;
+
+                    setcolor(background_color+font_color);
+                }
+            }
+        }
+        write_setting();
     }
 }
 
