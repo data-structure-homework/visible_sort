@@ -21,6 +21,9 @@ int arr100[100];
 int arr1000[1000];
 int arr5000[5000];
 int arr10000[10000];
+int f_color_arr[9]={0x1,0x0,0x8,0x9,0xA,0xC,0xD,0xE,0xF};
+int bg_olor_arr[9]={0x1,0x0,0x80,0x90,0xA0,0xC0,0xD0,0xE0,0xF0};
+    //颜色从下标一开始有效，顺序是黑色，灰色，淡蓝色，淡绿色，淡红色，淡紫色，淡黄色，白色
 int compare_count;      //比较计数器
 int exchange_count;     //交换计数器
 int array_size=2;       //数组大小  1.30   2.100   3.1000   4.5000   5.10000
@@ -800,39 +803,10 @@ void setting_function(){    //设置选项选择功能
                         cout<<"请输入你的选择:";
                         cin>>current_f_color;
                     }
-                    if(current_bg_color==1)
-                        background_color=0x0;
-                    else if(current_bg_color==2)
-                        background_color=0x80;
-                    else if(current_bg_color==3)
-                        background_color=0x90;
-                    else if(current_bg_color==4)
-                        background_color=0xA0;
-                    else if(current_bg_color==5)
-                        background_color=0xC0;
-                    else if(current_bg_color==6)
-                        background_color=0xD0;
-                    else if(current_bg_color==7)
-                        background_color=0xE0;
-                    else if(current_bg_color==8)
-                        background_color=0xF0;
 
-                    if(current_f_color==1)
-                        font_color=0x0;
-                    else if(current_f_color==2)
-                        font_color=0x8;
-                    else if(current_f_color==3)
-                        font_color=0x9;
-                    else if(current_f_color==4)
-                        font_color=0xA;
-                    else if(current_f_color==5)
-                        font_color=0xC;
-                    else if(current_f_color==6)
-                        font_color=0xD;
-                    else if(current_f_color==7)
-                        font_color=0xE;
-                    else if(current_f_color==8)
-                        font_color=0xF;
+                    background_color=bg_olor_arr[current_bg_color];
+
+                    font_color=f_color_arr[current_f_color];
 
                     setcolor(background_color+font_color);
                 }
