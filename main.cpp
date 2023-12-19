@@ -159,16 +159,23 @@ void display(int arr[],int number_count,int sort){   //可视化显示函数
             }
         }
         else{           //黑白显示
+            SetConsoleOutputCP(65001);
+            wchar_t buf[100] = {' '};
+            HANDLE hOutputHandle;
+            hOutputHandle = GetStdHandle(STD_OUTPUT_HANDLE);
+            DWORD n;
             for(int i=30;i>0;i--){
                 printf("\r"); 
                 for(int j=0;j<number_count;j++){
-                    if(arr[j]<i)
-                        printf(" ");
+                    if(arr[j]>=i)
+                        buf[j]=L'@';//■
                     else
-                        printf("■");
+                        buf[j]=' ';
                 }
-                cout<<endl;
+                gotoxy(0,30-i);
+                WriteConsole(hOutputHandle, buf, sizeof(buf), &n, 0);
             }
+            gotoxy(0,31);
         }
     }
     setcolor(background_color+font_color);
@@ -379,6 +386,10 @@ void insertion_sort(int arr[],int len)  //插入排序
             j--;
         }
         display(arr,len,1);
+
+        if(!display_color_switch)
+            sleep_mircosecends(50);
+
         exchange_count++;
         arr[j+1]=key;
     }
@@ -411,6 +422,8 @@ void quick_sort(int arr[],int len,int start,int end){       //快速排序
             arr[left_pointer]=arr[right_pointer];
             arr[right_pointer]=temp;
             display(arr,len,2);
+            if(!display_color_switch)
+                sleep_mircosecends(30);
         }
     }
     exchange_count++;
@@ -418,6 +431,9 @@ void quick_sort(int arr[],int len,int start,int end){       //快速排序
     arr[start]=arr[left_pointer];
     arr[left_pointer]=base_number;
     display(arr,len,2);
+
+    if(!display_color_switch)
+            sleep_mircosecends(30);
 
     quick_sort(arr,get_length(),start,left_pointer-1);
     quick_sort(arr,get_length(),left_pointer+1,end);
@@ -436,6 +452,9 @@ void bubble_sort(int arr[],int len){        //冒泡排序
             }
         }
         display(arr,len,3);
+
+        if(!display_color_switch)
+            sleep_mircosecends(50);
     }
 }
 
@@ -483,6 +502,9 @@ void merge(int arr[],int start,int mid,int end){        //归并排序
 
     display(arr,get_length(),4);
 
+    if(!display_color_switch)
+            sleep_mircosecends(50);
+
     delete []merge_sort_temp;
 }
 
@@ -503,6 +525,7 @@ void Shell_sort(int arr[],int len){             //希尔排序
                     arr[end+gap]=arr[end];
                     end-=gap;
                     display(arr,len,5);
+                    sleep_mircosecends(10);
                 }
                 else 
                 {
@@ -513,6 +536,9 @@ void Shell_sort(int arr[],int len){             //希尔排序
             arr[end+gap]=tem;
         }
         display(arr,len,5);
+
+        if(!display_color_switch)
+            sleep_mircosecends(10);
     }
 }
 
@@ -535,12 +561,16 @@ void Select_sort(int arr[],int len){  //选择排序.
             swap(arr[imin],arr[left]);
             exchange_count++;
             display(arr,len,6);
+            if(!display_color_switch)
+                            sleep_mircosecends(50);
         }
 		if(imax == left)imax = imin;
 		if(imax!=right){
             swap(arr[imax],arr[right]);
             exchange_count++;
             display(arr,len,6);
+            if(!display_color_switch)
+                            sleep_mircosecends(50);
         }
 		left++;
 		right--;
@@ -564,6 +594,10 @@ void heat_adjust(int arr[],int index,int len){  //生成大根堆
         swap(arr[index],arr[max_index]);
         exchange_count++;
         display(arr,len,7);
+
+        if(!display_color_switch)
+            sleep_mircosecends(10);
+
         heat_adjust(arr,max_index,len);
     }
 }
@@ -575,6 +609,10 @@ void heapsort(int arr[],int len){   //堆排序主函数
 
     for(int i=len-1;i>=1;i--){
         display(arr,len,7);
+
+        if(!display_color_switch)
+            sleep_mircosecends(10);
+        
         swap(arr[i],arr[0]);
         exchange_count++;
         heat_adjust(arr,0,i);
@@ -584,7 +622,7 @@ void heapsort(int arr[],int len){   //堆排序主函数
 void main_menu(){       //主菜单
     system("cls");
     cout<<"________________________________________________"<<endl;
-    cout<<"|可视化排序算法v1.5.1                           |"<<endl;
+    cout<<"|可视化排序算法v1.6                          |"<<endl;
     cout<<"|当前数组大小:";
     cout<<get_length()<<"\t\t\t\t|"<<endl;
     cout<<"|                                               |"<<endl;
@@ -658,7 +696,7 @@ void setting_menu(){    //设置菜单
     system("cls");
     cout<<"设置(beta)"<<endl;
     cout<<"1.图形化排序颜色开/关(禁用它以优化绘制性能)"<<endl;
-    cout<<"2.主题设置"<<endl;
+    cout<<"2.主题设置(beta)"<<endl;
     cout<<"0.退出"<<endl;
     cout<<"请输入你的选择:";
 }
@@ -850,6 +888,7 @@ void visible_menu_function(){   //可视化菜单选项选择功能
         if(choose==7){
             arr_init(get_array(),get_length());
             heapsort(get_array(),get_length());
+            display(get_array(),get_length(),7);
             cout<<"随机数组已经排序完成，请按任意键继续......";
             getchar();
         }
