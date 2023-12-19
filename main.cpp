@@ -21,6 +21,9 @@ int arr100[100];
 int arr1000[1000];
 int arr5000[5000];
 int arr10000[10000];
+int f_color_arr[9]={0x1,0x0,0x8,0x9,0xA,0xC,0xD,0xE,0xF};
+int bg_olor_arr[9]={0x1,0x0,0x80,0x90,0xA0,0xC0,0xD0,0xE0,0xF0};
+    //颜色从下标一开始有效，顺序是黑色，灰色，淡蓝色，淡绿色，淡红色，淡紫色，淡黄色，白色
 int compare_count;      //比较计数器
 int exchange_count;     //交换计数器
 int array_size=2;       //数组大小  1.30   2.100   3.1000   4.5000   5.10000
@@ -280,7 +283,7 @@ void read_setting(){
 
     string buffer;
 	while (getline(setfiles, buffer)) {
-		cout<<buffer<<endl; 
+		//cout<<buffer<<endl; 
         string dis_color="display_color_switch=";
         string arr_size="array_size=";
         string bg_color="background_color=";
@@ -314,7 +317,7 @@ void read_setting(){
                 background_color=int(buffer[17])-55;
 
             background_color*=16;
-            cout<<"bg_color="<<background_color<<endl;
+            cout<<"背景颜色="<<background_color<<endl;
         } 
 
         result=buffer.find(f_color);
@@ -324,7 +327,7 @@ void read_setting(){
             else
                 font_color=int(buffer[11])-55;
 
-            cout<<"f_color="<<font_color<<endl;
+            cout<<"字体颜色="<<font_color<<endl;
         } 
 	}
     setcolor(background_color+font_color);
@@ -622,7 +625,7 @@ void heapsort(int arr[],int len){   //堆排序主函数
 void main_menu(){       //主菜单
     system("cls");
     cout<<"________________________________________________"<<endl;
-    cout<<"|可视化排序算法v1.6                          |"<<endl;
+    cout<<"|可视化排序算法v1.6.1                           |"<<endl;
     cout<<"|当前数组大小:";
     cout<<get_length()<<"\t\t\t\t|"<<endl;
     cout<<"|                                               |"<<endl;
@@ -630,7 +633,7 @@ void main_menu(){       //主菜单
     cout<<"|2.双排序效率对比                               |"<<endl;
     cout<<"|                                               |"<<endl;
     cout<<"|4.切换排序数组大小                             |"<<endl;
-    cout<<"|5.设置(beta)                                   |"<<endl;
+    cout<<"|5.设置                                         |"<<endl;
     cout<<"|6.从本地读取配置文件                           |"<<endl;
     cout<<"|7.关于本程序                                   |"<<endl;
     cout<<"|                                               |"<<endl;
@@ -694,10 +697,13 @@ void array_size_menu(){     //数组大小选择菜单
 
 void setting_menu(){    //设置菜单
     system("cls");
-    cout<<"设置(beta)"<<endl;
-    cout<<"1.图形化排序颜色开/关(禁用它以优化绘制性能)"<<endl;
-    cout<<"2.主题设置(beta)"<<endl;
-    cout<<"0.退出"<<endl;
+    cout<<"______________________________________________"<<endl;
+    cout<<"|设置                                        |"<<endl;
+    cout<<"|1.图形化排序颜色开/关(禁用它以优化绘制性能) |"<<endl;
+    cout<<"|2.主题设置(beta)                            |"<<endl;
+    cout<<"|                                            |"<<endl;
+    cout<<"|0.退出                                      |"<<endl;
+    cout<<"----------------------------------------------"<<endl<<endl;
     cout<<"请输入你的选择:";
 }
 
@@ -751,7 +757,7 @@ void setting_function(){    //设置选项选择功能
                 cout<<"主题选择"<<endl;
                 cout<<"1.黑色主题"<<endl;
                 cout<<"2.白色主题"<<endl;
-                cout<<"3.自定义"<<endl;
+                cout<<"3.自定义"<<endl<<endl;
                 cout<<"0.退出"<<endl;
                 cout<<"请输入你的选择:";
                 
@@ -777,7 +783,7 @@ void setting_function(){    //设置选项选择功能
                         cout<<"5.淡红色"<<endl;
                         cout<<"6.淡紫色"<<endl;
                         cout<<"7.淡黄色"<<endl;
-                        cout<<"8.白色"<<endl;
+                        cout<<"8.白色"<<endl<<endl;
                         cout<<"请输入你的选择:";
                         cin>>current_bg_color;
                     }
@@ -796,43 +802,14 @@ void setting_function(){    //设置选项选择功能
                         cout<<"5.淡红色"<<endl;
                         cout<<"6.淡紫色"<<endl;
                         cout<<"7.淡黄色"<<endl;
-                        cout<<"8.白色"<<endl;
+                        cout<<"8.白色"<<endl<<endl;
                         cout<<"请输入你的选择:";
                         cin>>current_f_color;
                     }
-                    if(current_bg_color==1)
-                        background_color=0x0;
-                    else if(current_bg_color==2)
-                        background_color=0x80;
-                    else if(current_bg_color==3)
-                        background_color=0x90;
-                    else if(current_bg_color==4)
-                        background_color=0xA0;
-                    else if(current_bg_color==5)
-                        background_color=0xC0;
-                    else if(current_bg_color==6)
-                        background_color=0xD0;
-                    else if(current_bg_color==7)
-                        background_color=0xE0;
-                    else if(current_bg_color==8)
-                        background_color=0xF0;
 
-                    if(current_f_color==1)
-                        font_color=0x0;
-                    else if(current_f_color==2)
-                        font_color=0x8;
-                    else if(current_f_color==3)
-                        font_color=0x9;
-                    else if(current_f_color==4)
-                        font_color=0xA;
-                    else if(current_f_color==5)
-                        font_color=0xC;
-                    else if(current_f_color==6)
-                        font_color=0xD;
-                    else if(current_f_color==7)
-                        font_color=0xE;
-                    else if(current_f_color==8)
-                        font_color=0xF;
+                    background_color=bg_olor_arr[current_bg_color];
+
+                    font_color=f_color_arr[current_f_color];
 
                     setcolor(background_color+font_color);
                 }
