@@ -625,7 +625,7 @@ void heapsort(int arr[],int len){   //堆排序主函数
 void main_menu(){       //主菜单
     system("cls");
     cout<<"________________________________________________"<<endl;
-    cout<<"|可视化排序算法v1.6                          |"<<endl;
+    cout<<"|可视化排序算法v1.6.1                          |"<<endl;
     cout<<"|当前数组大小:";
     cout<<get_length()<<"\t\t\t\t|"<<endl;
     cout<<"|                                               |"<<endl;
