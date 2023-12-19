@@ -75,7 +75,7 @@ int * get_array(){  //返回当前选择的数组指针
         return arr100;
 }
 
-void get_sort_name(int sort){  //多排序比较-排序类型1      排序类型  0=undefined 1=插入排序 2=快速排序 3=冒泡排序 4=归并排序         未实现:5=希尔排序 6=选择排序 7=堆排序
+void get_sort_name(int sort){ 
     if(sort==1){
         cout<<"插入排序";
     }
@@ -283,7 +283,6 @@ void read_setting(){
 
     string buffer;
 	while (getline(setfiles, buffer)) {
-		//cout<<buffer<<endl; 
         string dis_color="display_color_switch=";
         string arr_size="array_size=";
         string bg_color="background_color=";
@@ -436,7 +435,7 @@ void quick_sort(int arr[],int len,int start,int end){       //快速排序
     display(arr,len,2);
 
     if(!display_color_switch)
-            sleep_mircosecends(30);
+        sleep_mircosecends(30);
 
     quick_sort(arr,get_length(),start,left_pointer-1);
     quick_sort(arr,get_length(),left_pointer+1,end);
@@ -506,7 +505,7 @@ void merge(int arr[],int start,int mid,int end){        //归并排序
     display(arr,get_length(),4);
 
     if(!display_color_switch)
-            sleep_mircosecends(50);
+        sleep_mircosecends(50);
 
     delete []merge_sort_temp;
 }
@@ -528,7 +527,9 @@ void Shell_sort(int arr[],int len){             //希尔排序
                     arr[end+gap]=arr[end];
                     end-=gap;
                     display(arr,len,5);
-                    sleep_mircosecends(10);
+
+                    if(!display_color_switch)
+                        sleep_mircosecends(10);
                 }
                 else 
                 {
@@ -564,16 +565,18 @@ void Select_sort(int arr[],int len){  //选择排序.
             swap(arr[imin],arr[left]);
             exchange_count++;
             display(arr,len,6);
+            
             if(!display_color_switch)
-                            sleep_mircosecends(50);
+                sleep_mircosecends(50);
         }
 		if(imax == left)imax = imin;
 		if(imax!=right){
             swap(arr[imax],arr[right]);
             exchange_count++;
             display(arr,len,6);
+
             if(!display_color_switch)
-                            sleep_mircosecends(50);
+                sleep_mircosecends(50);
         }
 		left++;
 		right--;
@@ -920,51 +923,11 @@ void compare_menu_function(){
         compare_menu(current_select);
         cin>>choose;
         if(current_select==1 && choose>=1 && choose<=7){
-            if(choose==1){
-                sort_1=1;
-            }
-            if(choose==2){
-                sort_1=2;
-            }
-            if(choose==3){
-                sort_1=3;
-            }
-            if(choose==4){
-                sort_1=4;
-            }
-            if(choose==5){
-                sort_1=5;
-            }
-            if(choose==6){
-                sort_1=6;
-            }
-            if(choose==7){
-                sort_1=7;
-            }
+            sort_1=choose;
             current_select++;
         }
         else if(current_select==2 && choose>=1 && choose<=7){
-            if(choose==1){
-                sort_2=1;
-            }
-            if(choose==2){
-                sort_2=2;
-            }
-            if(choose==3){
-                sort_2=3;
-            }
-            if(choose==4){
-                sort_2=4;
-            }
-            if(choose==5){
-                sort_2=5;
-            }
-            if(choose==6){
-                sort_2=6;
-            }
-            if(choose==7){
-                sort_2=7;
-            }
+            sort_2=choose;
             current_select++;
             break;
         }
